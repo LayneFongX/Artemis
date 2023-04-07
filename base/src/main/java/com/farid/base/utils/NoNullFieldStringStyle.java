@@ -3,8 +3,6 @@ package com.farid.base.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -19,8 +17,6 @@ import java.util.Map;
  * 则通过{@link org.apache.commons.lang3.builder.ToStringBuilder}反射输出
  */
 public class NoNullFieldStringStyle extends ToStringStyle {
-
-    protected static Logger logger = LoggerFactory.getLogger(NoNullFieldStringStyle.class);
 
     private static final long serialVersionUID = -6521970798918055233L;
 
@@ -79,7 +75,7 @@ public class NoNullFieldStringStyle extends ToStringStyle {
             try {
                 toStringMethod = clazz.getMethod("toString");
             } catch (Exception e) {
-                logger.error("指定的类" + clazz.getName() + "不存在toString()方法");
+                //  logger.error("指定的类" + clazz.getName() + "不存在toString()方法");
             }
             if (toStringMethod == null || toStringMethod.getDeclaringClass() == Object.class) {
                 object = ToStringBuilder.reflectionToString(object);
