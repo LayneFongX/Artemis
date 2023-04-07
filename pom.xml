@@ -5,31 +5,39 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>2.5.4</version>
         <relativePath/>
     </parent>
 
     <groupId>com.farid</groupId>
     <artifactId>artemis</artifactId>
     <version>1.0.0</version>
+    <packaging>pom</packaging>
 
     <name>Artemis</name>
     <description>Artemis</description>
 
     <properties>
         <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <spring-boot.version>2.3.5.RELEASE</spring-boot.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+            <version>${spring-boot.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <version>${spring-boot.version}</version>
         </dependency>
     </dependencies>
 
@@ -41,5 +49,9 @@
             </plugin>
         </plugins>
     </build>
+
+    <modules>
+        <module>starter</module>
+    </modules>
 
 </project>

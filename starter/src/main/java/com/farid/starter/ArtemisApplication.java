@@ -1,4 +1,4 @@
-package com.farid.artemis;
+package com.farid.starter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
