@@ -36,6 +36,9 @@ public class SchneiderCloudSiteAdapterService implements ISchneiderCloudSiteAdap
 
     @Override
     public Boolean updateCloudSite(String domain, String siteId, JSONObject body) {
+        String url = domain + "/v1/sites/" + siteId;
+        HttpHeaders header = new HttpHeaders();
+        httpInvokerProxy.putForObjecty(url, JSON.toJSONString(body), header);
         return Boolean.TRUE;
     }
 

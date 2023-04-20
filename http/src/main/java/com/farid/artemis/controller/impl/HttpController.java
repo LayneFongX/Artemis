@@ -26,4 +26,10 @@ public class HttpController implements IHttpController {
     public void createSite() {
         httpService.createSite();
     }
+
+    @Override
+    @GetMapping("/updateSite")
+    public void updateSite() {
+        httpService.updateSite();
+    }
 }

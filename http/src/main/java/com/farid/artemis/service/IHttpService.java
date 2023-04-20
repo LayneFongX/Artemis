@@ -9,4 +9,6 @@ public interface IHttpService {
     String sayHello();
 
     void createSite();
+
+    void updateSite();
 }
