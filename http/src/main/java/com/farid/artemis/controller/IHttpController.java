@@ -5,4 +5,5 @@ public interface IHttpController {
 
     String sayHello(String deviceId, String param1);
 
+    void createSite();
 }

@@ -20,4 +20,10 @@ public class HttpController implements IHttpController {
     public String sayHello(String deviceId, String params1) {
         return httpService.sayHello();
     }
+
+    @Override
+    @GetMapping("/createSite")
+    public void createSite() {
+        httpService.createSite();
+    }
 }

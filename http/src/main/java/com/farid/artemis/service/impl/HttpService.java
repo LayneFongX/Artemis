@@ -1,8 +1,12 @@
 package com.farid.artemis.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.farid.artemis.adapt.ISchneiderCloudSiteAdapterService;
 import com.farid.artemis.service.IHttpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * @Author Banchao
@@ -12,8 +16,25 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class HttpService implements IHttpService {
+
+    @Resource
+    private ISchneiderCloudSiteAdapterService cloudSiteAdapterService;
+
     @Override
     public String sayHello() {
         return "Hello,this is httpService.";
+    }
+
+    @Override
+    public void createSite() {
+        JSONObject bodyJson = new JSONObject();
+        bodyJson.put("id", "Test_update_location_id");
+        bodyJson.put("application", "WiserBySE");
+        bodyJson.put("name", "Test_update_location_name");
+        bodyJson.put("country", "SE");
+        bodyJson.put("timeZone", "Europe/Stockholm");
+
+        String domain = "https://fdcs-qa.wiser.schneider-electric.com/eec";
+        cloudSiteAdapterService.createCloudSite(domain, bodyJson);
     }
 }

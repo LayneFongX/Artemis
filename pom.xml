@@ -49,6 +49,12 @@
                 <version>${project.version}</version>
             </dependency>
 
+             <dependency>
+                 <groupId>com.farid.artemis</groupId>
+                 <artifactId>http</artifactId>
+                 <version>${project.version}</version>
+             </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
@@ -108,16 +114,6 @@
         </dependencies>
 
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.5.4</version>
-            </plugin>
-        </plugins>
-    </build>
 
     <modules>
         <module>starter</module>

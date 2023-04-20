@@ -7,4 +7,6 @@ package com.farid.artemis.service;
 public interface IHttpService {
 
     String sayHello();
+
+    void createSite();
 }
