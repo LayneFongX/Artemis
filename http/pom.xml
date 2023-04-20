@@ -3,15 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>com.farid</groupId>
         <artifactId>artemis</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <groupId>com.farid.artemis</groupId>
-    <artifactId>starter</artifactId>
+    <artifactId>http</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -27,13 +25,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.farid.artemis</groupId>
-            <artifactId>annotation</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.farid.artemis</groupId>
-            <artifactId>http</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
     </dependencies>

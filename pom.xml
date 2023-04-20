@@ -123,6 +123,7 @@
         <module>starter</module>
         <module>base</module>
         <module>annotation</module>
+        <module>http</module>
     </modules>
 
 </project>
