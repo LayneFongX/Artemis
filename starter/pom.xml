@@ -46,6 +46,21 @@
             <artifactId>i18n</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.farid.artemis</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.farid.artemis</groupId>
+            <artifactId>io</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.farid.artemis</groupId>
+            <artifactId>async</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

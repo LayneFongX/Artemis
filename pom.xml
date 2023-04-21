@@ -68,6 +68,24 @@
                  <version>${project.version}</version>
              </dependency>
 
+             <dependency>
+                 <groupId>com.farid.artemis</groupId>
+                 <artifactId>junit</artifactId>
+                 <version>${project.version}</version>
+             </dependency>
+
+             <dependency>
+                 <groupId>com.farid.artemis</groupId>
+                 <artifactId>io</artifactId>
+                 <version>${project.version}</version>
+             </dependency>
+
+             <dependency>
+                 <groupId>com.farid.artemis</groupId>
+                 <artifactId>async</artifactId>
+                 <version>${project.version}</version>
+             </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
@@ -141,6 +159,9 @@
         <module>http</module>
         <module>disruptor</module>
         <module>i18n</module>
+        <module>junit</module>
+        <module>io</module>
+        <module>async</module>
     </modules>
 
 </project>
