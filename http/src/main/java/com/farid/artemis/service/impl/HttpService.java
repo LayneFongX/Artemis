@@ -1,6 +1,7 @@
 package com.farid.artemis.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.farid.artemis.adapt.ISchneiderCloudMigrateAdapterService;
 import com.farid.artemis.adapt.ISchneiderCloudSiteAdapterService;
 import com.farid.artemis.service.IHttpService;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,11 @@ public class HttpService implements IHttpService {
 
     @Resource
     private ISchneiderCloudSiteAdapterService cloudSiteAdapterService;
+
+    @Resource
+    private ISchneiderCloudMigrateAdapterService migrateAdapterService;
+
+    private final static String DOMAIN = "https://fdcs-qa.wiser.schneider-electric.com/eec";
 
     @Override
     public String sayHello() {
@@ -53,7 +59,12 @@ public class HttpService implements IHttpService {
 
         bodyJson.put("geolocation", geoJson);
 
-        String domain = "https://fdcs-qa.wiser.schneider-electric.com/eec";
-        cloudSiteAdapterService.updateCloudSite(domain, "Test_update_location_id", bodyJson);
+
+        cloudSiteAdapterService.updateCloudSite(DOMAIN, "Test_update_location_id", bodyJson);
+    }
+
+    @Override
+    public void migrateData() {
+        migrateAdapterService.syncEquipmentEnergyHoursHistory(DOMAIN, "Test_update_location_id", "", "", "");
     }
 }

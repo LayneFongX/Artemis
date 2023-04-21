@@ -11,4 +11,6 @@ public interface IHttpService {
     void createSite();
 
     void updateSite();
+
+    void migrateData();
 }
