@@ -5,10 +5,6 @@ import org.springframework.aop.support.StaticMethodMatcherPointcutAdvisor;
 
 import java.lang.reflect.Method;
 
-/**
- * @author banchao.feng@tuya.com
- * @since 2021/10/22
- */
 public class MethodPointcutAdvisor extends StaticMethodMatcherPointcutAdvisor {
 
     @Override

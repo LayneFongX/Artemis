@@ -1,8 +1,9 @@
 package com.farid.artemis.action;
 
+import com.alibaba.fastjson.JSONObject;
 import com.farid.artemis.annotation.AtopPermissionAuthParams;
+import com.farid.artemis.domain.base.apicontext.ApiRequestDO;
 import com.farid.artemis.enums.VerifyMethodEnum;
-import com.farid.artemis.domain.apicontext.ApiRequestDO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -12,10 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * @author banchao.feng@tuya.com
- * @since 2021/10/29
- */
+
 @Slf4j
 @Component
 public class VerifyUserManageDeviceAction extends BaseAction {
@@ -28,10 +26,11 @@ public class VerifyUserManageDeviceAction extends BaseAction {
     @Override
     public void validate(AtopPermissionAuthParams verifyMethodParams, Map<String, Object> argsMap,
                          String uid, ApiRequestDO apiRequestDO) {
-        String deviceIds = (String) argsMap.get(verifyMethodParams.deviceIds());
+        log.info("VerifyUserManageDeviceAction validate verifyMethodParams = {},argsMap = {}", JSONObject.toJSONString(verifyMethodParams),
+                JSONObject.toJSONString(argsMap));
+        String deviceIds = getStringValue(argsMap.get(verifyMethodParams.deviceIds()));
         if (StringUtils.isBlank(deviceIds)) {
-            log.warn("valid param is empty deviceId={}", deviceIds);
-            throw new RuntimeException("PARAM_ILLEGAL");
+            throw new RuntimeException();
         }
 
         List<String> deviceIdList = Arrays.stream(deviceIds.split(REGEX)).collect(Collectors.toList());

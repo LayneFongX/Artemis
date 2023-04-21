@@ -2,17 +2,14 @@ package com.farid.artemis.action;
 
 
 import com.farid.artemis.annotation.AtopPermissionAuthParams;
+import com.farid.artemis.domain.base.apicontext.ApiRequestDO;
 import com.farid.artemis.service.IAtopPermissionAuthBaseService;
-import com.farid.artemis.domain.apicontext.ApiRequestDO;
 
 import javax.annotation.Resource;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * @author banchao.feng@tuya.com
- * @since 2021/10/28
- */
+
 public abstract class BaseAction implements AuthAction {
 
     public static final String REGEX = ",";
@@ -25,7 +22,7 @@ public abstract class BaseAction implements AuthAction {
                             Map<String, Object> argsMap) {
         ApiRequestDO apiRequestDO = getRequestDO(argsMap);
         if (Objects.isNull(apiRequestDO)) {
-            throw new RuntimeException("API_REQUEST_DO_NOT_EXIST");
+            throw new RuntimeException();
         }
 
         String uid = apiRequestDO.getApiContextDo().getUid();
@@ -43,5 +40,13 @@ public abstract class BaseAction implements AuthAction {
             }
         }
         return null;
+    }
+
+    public String getStringValue(Object obj) {
+        if (Objects.isNull(obj)) {
+            return null;
+        }
+
+        return String.valueOf(obj);
     }
 }

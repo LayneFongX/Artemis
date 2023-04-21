@@ -1,4 +1,4 @@
-package com.farid.artemis.domain.apicontext;
+package com.farid.artemis.domain.base.apicontext;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

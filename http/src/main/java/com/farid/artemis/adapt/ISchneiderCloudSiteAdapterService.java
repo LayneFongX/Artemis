@@ -1,6 +1,5 @@
 package com.farid.artemis.adapt;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.farid.artemis.domain.biz.site.EliqSiteBO;
 

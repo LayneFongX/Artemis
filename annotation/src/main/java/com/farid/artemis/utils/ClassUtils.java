@@ -19,13 +19,13 @@ public class ClassUtils {
      */
     public static <T extends Annotation> List<T> getAnnotationBySource(Method method, Class<T> type) {
 
-        //获取方法上注解配置
+        // 获取方法上注解配置
         T[] annotations = method.getDeclaredAnnotationsByType(type);
         if (!ArrayUtils.isEmpty(annotations)) {
             return List.of(annotations);
         }
 
-        //获取接口上的注解配置
+        // 获取接口上的注解配置
         Class<?>[] interfaces = method.getDeclaringClass().getInterfaces();
         for (Class<?> anInterface : interfaces) {
             try {

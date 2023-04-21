@@ -3,10 +3,6 @@ package com.farid.artemis.interceptor;
 import org.springframework.aop.Advisor;
 import org.springframework.context.annotation.Bean;
 
-/**
- * @author banchao.feng@tuya.com
- * @since 2021/10/21
- */
 
 //@Configuration
 public class AopConfiguration {

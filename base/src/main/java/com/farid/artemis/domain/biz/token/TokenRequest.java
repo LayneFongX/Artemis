@@ -9,11 +9,11 @@ import lombok.Data;
 @Data
 public class TokenRequest {
 
-  private String grant_type;
+    private String grant_type;
 
-  private String client_id;
+    private String client_id;
 
-  private String client_secret;
+    private String client_secret;
 
-  private String scope;
+    private String scope;
 }

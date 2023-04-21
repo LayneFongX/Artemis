@@ -6,10 +6,7 @@ import com.farid.artemis.enums.VerifyMethodEnum;
 
 import java.util.Map;
 
-/**
- * @author banchao.feng@tuya.com
- * @since 2021/10/28
- */
+
 public interface AuthAction {
 
     /**

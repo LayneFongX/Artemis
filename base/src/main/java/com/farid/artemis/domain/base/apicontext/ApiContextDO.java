@@ -1,7 +1,7 @@
-package com.farid.artemis.domain.apicontext;
+package com.farid.artemis.domain.base.apicontext;
 
 import com.farid.artemis.domain.base.BaseDO;
-import com.farid.artemis.domain.user.BaseUserDO;
+import com.farid.artemis.domain.base.user.BaseUserDO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,7 +20,7 @@ public class ApiContextDO extends BaseDO {
 
     private String imei;
 
-    private String imsi;                                                    //客户端用户标识,如果没有imsi,传递客户端ip
+    private String imsi;                                                    // 客户端用户标识,如果没有imsi,传递客户端ip
 
     private String lat;
 
@@ -42,13 +42,13 @@ public class ApiContextDO extends BaseDO {
 
     private boolean isLongin;
 
-    private String isH5;                                                    //1代表是H5
+    private String isH5;                                                    // 1代表是H5
 
-    private String h5TokenValue;                                            //h5登陆的加密值
+    private String h5TokenValue;                                            // h5登陆的加密值
 
     private String channelId;                                                // 渠道ID
 
-    //private String				cst;													//csrftoken，H5需要,,移到外面去
+    // private String				cst;													//csrftoken，H5需要,,移到外面去
 
     private String appVersion;                                            // 客户端版本信息
 
@@ -62,23 +62,23 @@ public class ApiContextDO extends BaseDO {
 
     private String type;                                                    // 客户端类型
 
-    private String platform;                                                //机型
+    private String platform;                                                // 机型
 
-    private String osSystem;                                                //客户端操作系统
+    private String osSystem;                                                // 客户端操作系统
 
-    private String lang = "zh-Hans";                        //语言包
+    private String lang = "zh-Hans";                        // 语言包
 
-    private BaseUserDO baseUserDO;                                            //基础的用户数据
+    private BaseUserDO baseUserDO;                                            // 基础的用户数据
 
     private String userAgent;
 
-    private Boolean checkDeviceId;                                            //ajax 是否验证设备
+    private Boolean checkDeviceId;                                            // ajax 是否验证设备
 
-    private String bizId;                                                    //ajax 用业务ID
+    private String bizId;                                                    // ajax 用业务ID
 
-    private Integer nek;                                                //客户端的网络
+    private Integer nek;                                                // 客户端的网络
 
-    private Integer ele;                                                //客户端的电量
+    private Integer ele;                                                // 客户端的电量
 
     private String region;                                        // 区域,AY,AZ,EU
 
