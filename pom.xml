@@ -62,6 +62,12 @@
                  <version>${project.version}</version>
              </dependency>
 
+             <dependency>
+                 <groupId>com.farid.artemis</groupId>
+                 <artifactId>i18n</artifactId>
+                 <version>${project.version}</version>
+             </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter</artifactId>
@@ -134,6 +140,7 @@
         <module>annotation</module>
         <module>http</module>
         <module>disruptor</module>
+        <module>i18n</module>
     </modules>
 
 </project>
