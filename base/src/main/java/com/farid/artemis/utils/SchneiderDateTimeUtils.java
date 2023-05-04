@@ -543,6 +543,30 @@ public class SchneiderDateTimeUtils {
         return monthBeignEndDtMap;
     }
 
+    public static Map<String, String> getMonthBeginEndDtMap(DateTime now) {
+        Map<String, String> monthBeignEndDtMap = new HashMap<>();
+        monthBeignEndDtMap.put("date", String.valueOf(now.getMonthOfYear()));
+
+        String periodLabel = now.toString(YYYY_MM_PATTERN);
+        monthBeignEndDtMap.put("periodLabel", periodLabel);
+
+        DateTime startDateTime = now.plusMillis(-now.getMillisOfDay()).plusDays(-now.getDayOfMonth() + 1).withZone(DateTimeZone.UTC);
+        String from = startDateTime.toString(YYYY_MM_DD_T_HH_MM_SS_Z_PATTERN);
+        monthBeignEndDtMap.put("from", from);
+
+        DateTime endDateTime = now.dayOfMonth().withMaximumValue()
+                .withHourOfDay(startDateTime.getHourOfDay())
+                .withMinuteOfHour(startDateTime.getMinuteOfHour())
+                .withSecondOfMinute(startDateTime.getSecondOfMinute())
+                .withMillisOfSecond(startDateTime.getMillisOfSecond());
+        String to = endDateTime.toString(YYYY_MM_DD_T_HH_MM_SS_Z_PATTERN);
+        monthBeignEndDtMap.put("to", to);
+
+        monthBeignEndDtMap.put("queryType", EliqDateTypeEnum.MONTH.getGroupBy());
+
+        return monthBeignEndDtMap;
+    }
+
     /**
      * 获取指定时区对应UTC时区的年开始时间
      *

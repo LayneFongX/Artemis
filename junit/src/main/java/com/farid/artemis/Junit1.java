@@ -1,13 +1,8 @@
 package com.farid.artemis;
 
 import com.farid.artemis.utils.SchneiderDateTimeUtils;
-import com.farid.artemis.utils.SchneiderZonedDateTimeUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-
-import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author Banchao
@@ -17,9 +12,12 @@ public class Junit1 {
 
     public static void main(String[] args) {
 
-        String equipmentTimeZoneId = "Europe/Copenhagen";
-
-        System.out.println(SchneiderDateTimeUtils.getYearBeginEndDtMap(equipmentTimeZoneId));
+        String siteTimeZoneId = "Europe/Oslo";
+        for (int i = 1; i < 13; i++) {
+            DateTime now1 = new DateTime(2023, i, 1, 0, 0, 0, DateTimeZone.forID(siteTimeZoneId));
+            System.out.println(now1);
+            System.out.println(SchneiderDateTimeUtils.getMonthBeginEndDtMap(now1));
+        }
     }
 
 }
