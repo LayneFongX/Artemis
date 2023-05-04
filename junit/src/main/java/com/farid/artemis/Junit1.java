@@ -1,8 +1,13 @@
 package com.farid.artemis;
 
+import com.farid.artemis.utils.SchneiderDateTimeUtils;
 import com.farid.artemis.utils.SchneiderZonedDateTimeUtils;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.time.ZonedDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author Banchao
@@ -10,19 +15,11 @@ import java.time.ZonedDateTime;
  */
 public class Junit1 {
 
-    private final static String BEGIN_STORE_TIME = "2022-09-01T00:00:00Z";
-
-
     public static void main(String[] args) {
-        String from = "2022-02-01T12:51:15Z";
+
         String equipmentTimeZoneId = "Europe/Copenhagen";
 
-        ZonedDateTime beginZonedDateTime = SchneiderZonedDateTimeUtils.getTargetZonedDateTime(BEGIN_STORE_TIME, equipmentTimeZoneId);
-        ZonedDateTime fromZonedDateTime = SchneiderZonedDateTimeUtils.getTargetZonedDateTime(from, equipmentTimeZoneId);
-        if (fromZonedDateTime.isBefore(beginZonedDateTime)){
-            fromZonedDateTime = beginZonedDateTime;
-        }
-        System.out.println(fromZonedDateTime);
+        System.out.println(SchneiderDateTimeUtils.getYearBeginEndDtMap(equipmentTimeZoneId));
     }
 
 }
