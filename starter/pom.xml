@@ -61,6 +61,11 @@
             <artifactId>async</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.farid.artemis</groupId>
+            <artifactId>mongo</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
