@@ -66,6 +66,11 @@
             <artifactId>mongo</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.farid.artemis</groupId>
+            <artifactId>eventhub</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
