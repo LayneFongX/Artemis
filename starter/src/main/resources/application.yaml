@@ -12,5 +12,5 @@ spring:
 logging:
   config: classpath:logback-spring.xml
   file:
-    path: ${user.home}/logs
+    path: ${user.home}/artemis-logs
 
