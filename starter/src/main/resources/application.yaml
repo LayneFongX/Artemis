@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: artemis
+
+  data:
+    mongodb:
+      uri: mongodb+srv://Farid:ZhoDh0dCy8le73U1@cluster0.kjx3vfz.mongodb.net/farid?retryWrites=true&w=majority
+
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    path: ${user.home}/logs
+

@@ -21,10 +21,10 @@ public class MongoService implements IMongoService {
     @Override
     public void insert() {
         JSONObject insertJson = new JSONObject();
-        insertJson.put("color","red");
-        insertJson.put("number",1);
-        insertJson.put("author","Banchao");
+        insertJson.put("color", "red");
+        insertJson.put("number", 1);
+        insertJson.put("author", "Banchao");
 
-        mongoTemplate.insert(insertJson,"test");
+        mongoTemplate.insert(insertJson, "test");
     }
 }

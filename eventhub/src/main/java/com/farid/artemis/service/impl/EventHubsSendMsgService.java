@@ -1,15 +1,8 @@
 package com.farid.artemis.service.impl;
 
-import com.azure.messaging.eventhubs.EventData;
-import com.azure.messaging.eventhubs.EventDataBatch;
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
-import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.farid.artemis.service.IEventHubsSendMsgService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @Author Banchao

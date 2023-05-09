@@ -21,7 +21,7 @@ public class EventHubSender {
     public static void main(String[] args) {
         EventHubProducerClient producer = new EventHubClientBuilder().connectionString(EVENT_HUB_CONNECTION, EVENT_HUB_NAME).buildProducerClient();
 
-        List<EventData> allEvents = Arrays.asList(new EventData("Foo"), new EventData("Bar"));
+        List<EventData> allEvents = Arrays.asList(new EventData("安迪问我调研的怎么样了"), new EventData("当我收到这个消息的时候说明Demo已经跑通了"));
 
         EventDataBatch eventDataBatch = producer.createBatch();
         for (EventData eventData : allEvents) {

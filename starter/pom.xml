@@ -71,6 +71,11 @@
             <artifactId>eventhub</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.farid.artemis</groupId>
+            <artifactId>log</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

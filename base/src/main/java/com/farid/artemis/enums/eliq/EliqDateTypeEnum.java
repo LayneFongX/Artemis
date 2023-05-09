@@ -1,4 +1,4 @@
-package com.farid.artemis.enums;
+package com.farid.artemis.enums.eliq;
 
 import org.apache.commons.lang3.StringUtils;
 

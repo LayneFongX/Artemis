@@ -1,7 +1,7 @@
 package com.farid.artemis.utils;
 
-import com.farid.artemis.enums.EliqDateTypeEnum;
 import com.farid.artemis.enums.TimeTypeEnum;
+import com.farid.artemis.enums.eliq.EliqDateTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -461,7 +461,7 @@ public class SchneiderDateTimeUtils {
         calendar.add(Calendar.DATE, 4 + calendar.getFirstDayOfWeek());
 
         String weekEnd = format.format(calendar.getTime());
-        return new String[] {weekBegin, weekEnd};
+        return new String[]{weekBegin, weekEnd};
     }
 
     /**

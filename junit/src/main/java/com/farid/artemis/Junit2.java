@@ -1,10 +1,13 @@
 package com.farid.artemis;
 
 import com.farid.artemis.domain.biz.device.DeviceBO;
-import com.farid.artemis.enums.PTEMultiEnvEnum;
+import com.farid.artemis.enums.eliq.PTEMultiEnvEnum;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -32,7 +35,7 @@ public class Junit2 {
 
     private static List<DeviceBO> initDeviceBOList() {
         DeviceBO deviceBO1 = new DeviceBO();
-        deviceBO1.setId(UUID.randomUUID().toString().replace("-",""));
+        deviceBO1.setId(UUID.randomUUID().toString().replace("-", ""));
         deviceBO1.setCustomName("deviceBO1");
         deviceBO1.setActiveTime(1683561700L);
         deviceBO1.setProductId("of1wzxhd");
