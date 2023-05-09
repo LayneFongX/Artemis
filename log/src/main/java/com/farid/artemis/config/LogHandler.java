@@ -1,7 +1,7 @@
 package com.farid.artemis.config;
 
 import com.alibaba.fastjson.JSON;
-import com.farid.artemis.domain.biz.log.UpdateLevel;
+import com.farid.artemis.domain.biz.log.LogLevelUpdateVO;
 import com.farid.artemis.service.ILogger;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.impl.StaticLoggerBinder;
@@ -37,12 +37,12 @@ public class LogHandler {
         }
         logger.init();
 
-        List<UpdateLevel> updateLevels = JSON.parseArray(CLASSES_LOG_LEVEL, UpdateLevel.class);
-        if (CollectionUtils.isEmpty(updateLevels)) {
+        List<LogLevelUpdateVO> logLevelUpdateVOS = JSON.parseArray(CLASSES_LOG_LEVEL, LogLevelUpdateVO.class);
+        if (CollectionUtils.isEmpty(logLevelUpdateVOS)) {
             logger.reset();
             return;
         }
 
-        logger.setLevel(updateLevels);
+        logger.setLevel(logLevelUpdateVOS);
     }
 }

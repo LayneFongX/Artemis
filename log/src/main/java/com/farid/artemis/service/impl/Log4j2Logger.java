@@ -1,8 +1,8 @@
 package com.farid.artemis.service.impl;
 
 
-import com.farid.artemis.domain.biz.log.LoggerType;
-import com.farid.artemis.domain.biz.log.UpdateLevel;
+import com.farid.artemis.enums.log.LoggerTypeEnum;
+import com.farid.artemis.domain.biz.log.LogLevelUpdateVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Level;
@@ -21,8 +21,8 @@ import java.util.Objects;
 public class Log4j2Logger extends BaseLogger {
 
     @Override
-    public LoggerType getLogType() {
-        return LoggerType.LOG4J2;
+    public LoggerTypeEnum getLogType() {
+        return LoggerTypeEnum.LOG4J2;
     }
 
     public void init() {
@@ -38,12 +38,12 @@ public class Log4j2Logger extends BaseLogger {
     }
 
     @Override
-    public void setLevel(List<UpdateLevel> updateLevels) {
+    public void setLevel(List<LogLevelUpdateVO> logLevelUpdateVOS) {
         LoggerContext loggerContext = (LoggerContext) LogManager.getContext(false);
-        for (UpdateLevel updateLevel : updateLevels) {
-            Logger logger = loggerContext.getLogger(updateLevel.getLogName());
+        for (LogLevelUpdateVO logLevelUpdateVO : logLevelUpdateVOS) {
+            Logger logger = loggerContext.getLogger(logLevelUpdateVO.getLogName());
             if (Objects.nonNull(logger)) {
-                Level targetLevel = Level.toLevel(updateLevel.getLevel());
+                Level targetLevel = Level.toLevel(logLevelUpdateVO.getLevel());
                 logger.setLevel(targetLevel);
             }
         }

@@ -3,8 +3,8 @@ package com.farid.artemis.service.impl;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
-import com.farid.artemis.domain.biz.log.LoggerType;
-import com.farid.artemis.domain.biz.log.UpdateLevel;
+import com.farid.artemis.enums.log.LoggerTypeEnum;
+import com.farid.artemis.domain.biz.log.LogLevelUpdateVO;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -20,21 +20,21 @@ public class LogbackLogger extends BaseLogger {
     private final LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
 
     @Override
-    public LoggerType getLogType() {
-        return LoggerType.LOGBACK;
+    public LoggerTypeEnum getLogType() {
+        return LoggerTypeEnum.LOGBACK;
     }
 
     public void init() {
     }
 
     @Override
-    public void setLevel(List<UpdateLevel> updateLevels) {
-        for (UpdateLevel updateLevel : updateLevels) {
-            Logger targetLogger = loggerContext.getLogger(updateLevel.getLogName());
+    public void setLevel(List<LogLevelUpdateVO> logLevelUpdateVOS) {
+        for (LogLevelUpdateVO logLevelUpdateVO : logLevelUpdateVOS) {
+            Logger targetLogger = loggerContext.getLogger(logLevelUpdateVO.getLogName());
 
-            storeLoggerHistoryLevel(updateLevel, targetLogger);
+            storeLoggerHistoryLevel(logLevelUpdateVO, targetLogger);
 
-            Level targetLevel = Level.toLevel(updateLevel.getLevel());
+            Level targetLevel = Level.toLevel(logLevelUpdateVO.getLevel());
             targetLogger.setLevel(targetLevel);
         }
     }
@@ -48,10 +48,10 @@ public class LogbackLogger extends BaseLogger {
     /**
      * 记录每次修改的logger和日志级别，清除的时候使用
      */
-    private void storeLoggerHistoryLevel(UpdateLevel updateLevel, Logger targetLogger) {
+    private void storeLoggerHistoryLevel(LogLevelUpdateVO logLevelUpdateVO, Logger targetLogger) {
         Level level = targetLogger.getEffectiveLevel();
         if (Objects.nonNull(level)) {
-            loggerMap.put(updateLevel.getLogName(), level.toString());
+            loggerMap.put(logLevelUpdateVO.getLogName(), level.toString());
         }
     }
 }

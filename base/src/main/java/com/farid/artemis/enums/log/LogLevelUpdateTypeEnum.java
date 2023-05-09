@@ -1,11 +1,11 @@
-package com.farid.artemis.domain.biz.log;
+package com.farid.artemis.enums.log;
 
-public enum UpdateType {
+public enum LogLevelUpdateTypeEnum {
     ALL(1),
     PACKAGE(2),
     CLASS(3);
 
-    UpdateType(int type) {
+    LogLevelUpdateTypeEnum(int type) {
         this.type = type;
     }
 

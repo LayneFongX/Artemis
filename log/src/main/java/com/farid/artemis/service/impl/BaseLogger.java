@@ -1,6 +1,6 @@
 package com.farid.artemis.service.impl;
 
-import com.farid.artemis.domain.biz.log.UpdateLevel;
+import com.farid.artemis.domain.biz.log.LogLevelUpdateVO;
 import com.farid.artemis.service.ILogger;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
@@ -16,16 +16,16 @@ public abstract class BaseLogger implements ILogger {
 
     @Override
     public void reset() {
-        List<UpdateLevel> updateLevels = Lists.newArrayList();
+        List<LogLevelUpdateVO> logLevelUpdateVOS = Lists.newArrayList();
         loggerMap.keySet().forEach(key -> {
-            UpdateLevel updateLevel = new UpdateLevel();
+            LogLevelUpdateVO logLevelUpdateVO = new LogLevelUpdateVO();
             String level = loggerMap.get(key);
-            updateLevel.setLogName(key);
-            updateLevel.setLevel(level);
-            updateLevels.add(updateLevel);
+            logLevelUpdateVO.setLogName(key);
+            logLevelUpdateVO.setLevel(level);
+            logLevelUpdateVOS.add(logLevelUpdateVO);
         });
 
-        log.info("reset logger level {}", updateLevels);
-        setLevel(updateLevels);
+        log.info("reset logger level {}", logLevelUpdateVOS);
+        setLevel(logLevelUpdateVOS);
     }
 }
