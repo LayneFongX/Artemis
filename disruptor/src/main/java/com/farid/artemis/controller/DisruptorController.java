@@ -1,6 +1,7 @@
 package com.farid.artemis.controller;
 
 import com.farid.artemis.service.IDisruptorConsumerMessageService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,31 +17,34 @@ public class DisruptorController {
     private IDisruptorConsumerMessageService disruptorConsumerMessageService;
 
     @GetMapping("/singleConsumeMessage")
-    public String singleConsumeMessage(@RequestParam("producerCount") int producerCount, @RequestParam("consumerCount") int consumerCount,
-                                       @RequestParam("msgCount") int msgCount) {
+    public ResponseEntity<String> singleConsumeMessage(@RequestParam("producerCount") int producerCount, @RequestParam("consumerCount") int consumerCount,
+                                                       @RequestParam("msgCount") int msgCount) {
         long startTime = System.currentTimeMillis();
         disruptorConsumerMessageService.singleConsumeMessage(producerCount, consumerCount, msgCount);
-        return "当前生产者有" + producerCount + "个，当前消费者有:" + consumerCount + "个,生产并消费了:" + msgCount + "条消息,耗时为:" +
+        String msg = "当前生产者有" + producerCount + "个，当前消费者有:" + consumerCount + "个,生产并消费了:" + msgCount + "条消息,耗时为:" +
                 (System.currentTimeMillis() - startTime) + "ms";
+        return ResponseEntity.ok(msg);
     }
 
     @GetMapping("/multiRepeatConsumeMessage")
-    public String multiRepeatConsumeMessage(@RequestParam("producerCount") int producerCount,
+    public ResponseEntity<String> multiRepeatConsumeMessage(@RequestParam("producerCount") int producerCount,
                                             @RequestParam("consumerCount") int consumerCount,
                                             @RequestParam("msgCount") int msgCount) {
         long startTime = System.currentTimeMillis();
         disruptorConsumerMessageService.multiRepeatConsumeMessage(producerCount, consumerCount, msgCount);
-        return "当前生产者有" + producerCount + "个，当前消费者有:" + consumerCount + "个,生产并消费了:" + msgCount + "条消息,耗时为:" +
+        String msg = "当前生产者有" + producerCount + "个，当前消费者有:" + consumerCount + "个,生产并消费了:" + msgCount + "条消息,耗时为:" +
                 (System.currentTimeMillis() - startTime) + "ms";
+        return ResponseEntity.ok(msg);
     }
 
     @GetMapping("/multiCompeteConsumeMessage")
-    public String multiCompeteConsumeMessage(@RequestParam("producerCount") int producerCount,
+    public ResponseEntity<String> multiCompeteConsumeMessage(@RequestParam("producerCount") int producerCount,
                                              @RequestParam("consumerCount") int consumerCount,
                                              @RequestParam("msgCount") int msgCount) {
         long startTime = System.currentTimeMillis();
         disruptorConsumerMessageService.multiCompeteConsumeMessage(producerCount, consumerCount, msgCount);
-        return "当前生产者有" + producerCount + "个，当前消费者有:" + consumerCount + "个,生产并消费了:" + msgCount + "条消息,耗时为:" +
+        String msg = "当前生产者有" + producerCount + "个，当前消费者有:" + consumerCount + "个,生产并消费了:" + msgCount + "条消息,耗时为:" +
                 (System.currentTimeMillis() - startTime) + "ms";
+        return ResponseEntity.ok(msg);
     }
 }
