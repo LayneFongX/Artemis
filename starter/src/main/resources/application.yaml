@@ -13,4 +13,5 @@ logging:
   config: classpath:logback-spring.xml
   file:
     path: ${user.home}/artemis-logs
-
+  level:
+    org.springframework.boot.autoconfigure: error

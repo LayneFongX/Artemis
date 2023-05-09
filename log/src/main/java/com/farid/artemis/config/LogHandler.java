@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class LogHandler {
-    public static final String CLASSES_LOG_LEVEL = "[{\"logName\":\"com.tuya.europa.service.kafkamq.base.AbstractBizConsumer\",\"level\":\"OFF\"}]";
+    public static final String CLASSES_LOG_LEVEL = "[{\"logName\":\"org.mongodb.driver\",\"level\":\"OFF\"}]";
 
     private final Map<String, ILogger> loggerMap;
 

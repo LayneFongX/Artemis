@@ -11,14 +11,6 @@
     <!-- 动态日志级别 -->
     <jmxConfigurator/>
 
-    <!-- 定义日志文件 输出位置 -->
-    <property name="log.log_dir" value="logs"/>
-    <property name="log.log_name" value="log"/>
-    <!-- 日志最大的历史 30天 -->
-    <property name="log.maxHistory" value="7"/>
-    <property name="log.level" value="debug"/>
-    <property name="log.maxSize" value="20MB" />
-
     <!-- ConsoleAppender 控制台输出日志 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -27,6 +19,42 @@
                 <!-- 日期 [线程] [class类]-[日志级别] log内容 -->
                 %blue(%d{yyyy-MM-dd HH:mm:ss,SSS}) [%yellow(%c)]-[%highlight(%p)] %m%n
             </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- INFO级别日志 appender -->
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_PATH}/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}/info_%d{yyyy-MM-dd.HH}.log</FileNamePattern>
+            <MaxHistory>7</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- DEBUG级别日志 appender -->
+    <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_PATH}/warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}/warn_%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger - %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -43,17 +71,10 @@
             <!-- 用于配置不符合过滤条件的操作 -->
             <onMismatch>DENY</onMismatch>
         </filter>
-        <!-- 最常用的滚动策略，它根据时间来制定滚动策略.既负责滚动也负责触发滚动 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <!--日志输出位置 可相对、和绝对路径 -->
-            <fileNamePattern>
-                ${log.log_dir}/error/%d{yyyy-MM-dd}/error_${log.log_name}-%i.log
-            </fileNamePattern>
-            <!-- 可选节点，控制保留的归档文件的最大数量，超出数量就删除旧文件,假设设置每个月滚动，且<maxHistory>是6，
-            则只保存最近6个月的文件，删除之前的旧文件。注意，删除旧文件是，那些为了归档而创建的目录也会被删除 -->
-            <maxHistory>${log.maxHistory}</maxHistory>
-            <!--日志文件最大的大小-->
-            <MaxFileSize>${log.maxSize}</MaxFileSize>
+        <file>${LOG_PATH}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}/error_%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>15</MaxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>
@@ -62,59 +83,6 @@
             </pattern>
         </encoder>
     </appender>
-
-    <!-- INFO级别日志 appender -->
-    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.log_dir}/info/%d{yyyy-MM-dd}/info_${log.log_name}-%i.log</fileNamePattern>
-            <maxHistory>${log.maxHistory}</maxHistory>
-            <MaxFileSize>${log.maxSize}</MaxFileSize>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-
-    <!-- DEBUG级别日志 appender -->
-    <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>DEBUG</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.log_dir}/debug/%d{yyyy-MM-dd}/debug_${log.log_name}-%i.log</fileNamePattern>
-            <maxHistory>${log.maxHistory}</maxHistory>
-            <MaxFileSize>${log.maxSize}</MaxFileSize>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <!--设置一个向上传递的appender,所有级别的日志都会输出-->
-    <appender name="app" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>${log.log_dir}/app/%d{yyyy-MM-dd}/app_${log.log_name}-%i.log</fileNamePattern>
-            <maxHistory>${log.maxHistory}</maxHistory>
-            <MaxFileSize>${log.maxSize}</MaxFileSize>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] %logger - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <!--name包下的类的日志输出-->
-    <logger name="com.example.webtest.controller" additivity="true" level="DEBUG" >
-        <appender-ref ref="ERROR" />
-        <appender-ref ref="INFO" />
-    </logger>
 
     <!-- root级别   DEBUG -->
     <root>
