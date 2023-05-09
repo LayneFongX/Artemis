@@ -26,13 +26,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-messaging-eventhubs</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
         </dependency>
     </dependencies>
 

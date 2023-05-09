@@ -145,6 +145,12 @@
             </dependency>
 
             <dependency>
+              <groupId>com.azure.spring</groupId>
+              <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
+              <version>4.7.0</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
@@ -191,18 +197,6 @@
                 <artifactId>disruptor</artifactId>
                 <version>${disruptor.version}</version>
             </dependency>
-
-            <dependency>
-		        <groupId>com.azure</groupId>
-		        <artifactId>azure-messaging-eventhubs</artifactId>
-		        <version>${azure-messaging-eventhubs.version}</version>
-		    </dependency>
-
-		    <dependency>
-		        <groupId>com.azure</groupId>
-		        <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-		        <version>${azure-messaging-eventhubs-checkpointstore-blob.version}</version>
-		    </dependency>
 
         </dependencies>
 
