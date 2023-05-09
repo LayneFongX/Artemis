@@ -15,13 +15,8 @@ public class EventHubsController {
     @Resource
     private IEventHubsSendMsgService eventHubsSendMsgService;
 
-    @Resource
-    private IEventHubsReceiveMsgService eventHubsReceiveMsgService;
-
-    @PostMapping("/sendReceiveEventHubsMsg")
-    public void sendReceiveEventHubsMsg() throws InterruptedException {
+    @PostMapping("/sendEventHubsMsg")
+    public void sendEventHubsMsg(){
         eventHubsSendMsgService.sendEventHubsMsg();
-        eventHubsSendMsgService.batchSendEventHubsMsg();
-        eventHubsReceiveMsgService.receiveMessages();
     }
 }

@@ -7,6 +7,4 @@ package com.farid.artemis.service;
 public interface IEventHubsSendMsgService {
 
     void sendEventHubsMsg();
-
-    void batchSendEventHubsMsg();
 }

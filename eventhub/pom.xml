@@ -27,9 +27,13 @@
 
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>azure-messaging-servicebus</artifactId>
+            <artifactId>azure-messaging-eventhubs</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
