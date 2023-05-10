@@ -1,4 +1,4 @@
-package com.farid.artemis.processor;
+package com.farid.artemis.config;
 
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.models.ErrorContext;

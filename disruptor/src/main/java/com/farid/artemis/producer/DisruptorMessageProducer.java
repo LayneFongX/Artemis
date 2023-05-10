@@ -1,8 +1,8 @@
 package com.farid.artemis.producer;
 
 import com.farid.artemis.constant.Constant;
-import com.farid.artemis.listener.DisruptorEventConsumerHandler;
-import com.farid.artemis.listener.DisruptorWorkConsumerHandler;
+import com.farid.artemis.consumer.DisruptorEventConsumerHandler;
+import com.farid.artemis.consumer.DisruptorWorkConsumerHandler;
 import com.farid.artemis.domain.DisruptorMessage;
 import com.farid.artemis.factory.DisruptorMessageFactory;
 import com.lmax.disruptor.RingBuffer;

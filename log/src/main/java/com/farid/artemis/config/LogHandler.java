@@ -1,4 +1,4 @@
-package com.farid.artemis.processor;
+package com.farid.artemis.config;
 
 import com.alibaba.fastjson.JSON;
 import com.farid.artemis.domain.biz.log.LogLevelUpdateVO;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class LogHandler {
-    public static final String CLASSES_LOG_LEVEL = "[{\"logName\":\"org.mongodb.driver\",\"level\":\"OFF\"}]";
+    public static final String CLASSES_LOG_LEVEL = "[{\"logName\":\"org.mongodb.driver\",\"level\":\"OFF\"},{\"logName\":\"com.azure.core.amqp\",\"level\":\"OFF\"},{\"logName\":\"com.azure.messaging\",\"level\":\"OFF\"},{\"logName\":\"org.springframework.web.servlet\",\"level\":\"OFF\"}]";
 
     private final Map<String, ILogger> loggerMap;
 
