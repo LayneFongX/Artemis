@@ -1,35 +1,29 @@
-package com.farid.artemis.service.impl;
+package com.farid.artemis.producer.impl;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
-import com.farid.artemis.service.IEventHubsSendMsgService;
+import com.farid.artemis.constant.EventHubsConstant;
+import com.farid.artemis.producer.IEventHubsSendMsgService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-/**
- * @Author Banchao
- * @Date 2023/5/9 10:59
- */
 
 @Slf4j
 @Service
 public class EventHubsSendMsgService implements IEventHubsSendMsgService {
 
-    private final static String EVENT_HUB_CONNECTION = "Endpoint=sb://farid-event-hubs.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=moHMVM6lLekAbdi9y/TJLIX/yvKxQrynx+AEhDFqCwQ=";
-
-    private final static String EVENT_HUB_NAME = "myeventhub";
-
     @Override
-    public void sendEventHubsMsg() {
-        EventHubProducerClient producer = new EventHubClientBuilder().connectionString(EVENT_HUB_CONNECTION, EVENT_HUB_NAME).buildProducerClient();
+    public void sendEventHubsMsg(String message) {
+        EventHubProducerClient producer = new EventHubClientBuilder()
+                .connectionString(EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_CONNECTION_STRING,
+                        EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_EVENT_HUB_NAME).buildProducerClient();
 
-        List<EventData> allEvents = Arrays.asList(new EventData("Foo"), new EventData("Bar"));
-
+        List<EventData> allEvents = Collections.singletonList(new EventData(message));
         EventDataBatch eventDataBatch = producer.createBatch();
         for (EventData eventData : allEvents) {
             if (!eventDataBatch.tryAdd(eventData)) {

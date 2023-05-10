@@ -1,4 +1,4 @@
-package com.farid.artemis.config;
+package com.farid.artemis.processor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

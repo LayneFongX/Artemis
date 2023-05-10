@@ -1,4 +1,4 @@
-package com.farid.artemis.config;
+package com.farid.artemis.processor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

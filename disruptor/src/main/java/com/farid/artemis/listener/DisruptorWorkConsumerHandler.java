@@ -1,4 +1,4 @@
-package com.farid.artemis.consumer;
+package com.farid.artemis.listener;
 
 
 import com.farid.artemis.domain.DisruptorMessage;

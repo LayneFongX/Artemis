@@ -3,7 +3,7 @@ package com.farid.artemis.service;
 
 import com.farid.artemis.action.AuthAction;
 import com.farid.artemis.annotation.AtopPermissionAuthParams;
-import com.farid.artemis.config.AtopPermissionApolloConfig;
+import com.farid.artemis.processor.AtopPermissionApolloConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

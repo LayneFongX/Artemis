@@ -1,7 +1,7 @@
 package com.farid.artemis.interceptor;
 
 import com.farid.artemis.annotation.AtopPermissionAuth;
-import com.farid.artemis.config.AtopPermissionApolloConfig;
+import com.farid.artemis.processor.AtopPermissionApolloConfig;
 import com.farid.artemis.domain.AtopPermissionAuthMeta;
 import com.farid.artemis.service.VerifyBizService;
 import com.farid.artemis.utils.ClassUtils;

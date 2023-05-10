@@ -1,4 +1,4 @@
-package com.farid.artemis.config;
+package com.farid.artemis.processor;
 
 import com.alibaba.fastjson.JSON;
 import com.farid.artemis.domain.biz.log.LogLevelUpdateVO;
