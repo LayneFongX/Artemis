@@ -9,7 +9,6 @@ import com.farid.artemis.producer.IEventHubsSendMsgService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +37,7 @@ public class EventHubsSendMsgService implements IEventHubsSendMsgService {
         }
         if (eventDataBatch.getCount() > 0) {
             producer.send(eventDataBatch);
+            log.info("EventHubsSendMsgService sendEventHubsMsg producer send msg = {}", message);
         }
         producer.close();
     }
