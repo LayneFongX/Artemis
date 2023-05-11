@@ -6,5 +6,5 @@ package com.farid.artemis.producer;
  */
 public interface IEventHubsSendMsgService {
 
-    void sendEventHubsMsg(String message);
+    void sendEventHubsMsg(String message,String partitionId);
 }

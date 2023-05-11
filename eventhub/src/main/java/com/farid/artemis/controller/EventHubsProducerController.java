@@ -18,8 +18,8 @@ public class EventHubsProducerController {
     private IEventHubsSendMsgService eventHubsSendMsgService;
 
     @PostMapping("/sendMessage")
-    public ResponseEntity<Void> sendMessage(@RequestParam String message) {
-        eventHubsSendMsgService.sendEventHubsMsg(message);
+    public ResponseEntity<Void> sendMessage(@RequestParam String message, @RequestParam String partitionId) {
+        eventHubsSendMsgService.sendEventHubsMsg(message, partitionId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -13,6 +13,4 @@ public class EventHubsConstant {
     public static final String EVENT_HUBS_EEC_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=fdstorageaccount;AccountKey=VFgne15epNUcs0ruPqbiMSNakmJgNS3BsEUYq1ZWYeAHUsBzlA9WCmlxwGUpPF1uxXJwCpnqR30B+AStxqt1Eg==;EndpointSuffix=core.windows.net";
 
     public static final String EVENT_HUBS_EEC_STORAGE_CONTAINER_NAME = "mycontainer";
-
-
 }
