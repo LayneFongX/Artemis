@@ -3,7 +3,7 @@ package com.farid.artemis.adapt.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.farid.artemis.adapt.ISchneiderCloudSiteAdapterService;
-import com.farid.artemis.domain.biz.site.EliqSiteBO;
+import com.farid.artemis.domain.biz.site.EECSiteBO;
 import com.farid.artemis.invoke.HttpInvokerProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -20,11 +20,11 @@ public class SchneiderCloudSiteAdapterService implements ISchneiderCloudSiteAdap
     private HttpInvokerProxy httpInvokerProxy;
 
     @Override
-    public EliqSiteBO getCloudSite(String domain, String siteId) {
+    public EECSiteBO getCloudSite(String domain, String siteId) {
         String url = domain + "/v1/sites/" + siteId;
         HttpHeaders header = new HttpHeaders();
         ResponseEntity responseEntity = httpInvokerProxy.getForObject(url, header);
-        return JSON.parseObject(String.valueOf(responseEntity.getBody()), EliqSiteBO.class);
+        return JSON.parseObject(String.valueOf(responseEntity.getBody()), EECSiteBO.class);
     }
 
     @Override

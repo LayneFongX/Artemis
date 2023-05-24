@@ -1,5 +1,7 @@
 package com.farid.artemis.utils;
 
+
+import com.farid.artemis.domain.biz.timer.TimeZoneIdDifferTimeVO;
 import com.farid.artemis.enums.TimeTypeEnum;
 import com.farid.artemis.enums.eliq.EliqDateTypeEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -461,7 +463,7 @@ public class SchneiderDateTimeUtils {
         calendar.add(Calendar.DATE, 4 + calendar.getFirstDayOfWeek());
 
         String weekEnd = format.format(calendar.getTime());
-        return new String[]{weekBegin, weekEnd};
+        return new String[] {weekBegin, weekEnd};
     }
 
     /**
@@ -500,6 +502,55 @@ public class SchneiderDateTimeUtils {
         return String.format("%02d", dateTime.getHourOfDay()) + ":" + String.format("%02d", dateTime.getMinuteOfHour());
     }
 
+    public static TimeZoneIdDifferTimeVO getDifferWithTimeZoneId(String timeZoneId1, String timeZoneId2) {
+        long currentTimeMillis = System.currentTimeMillis();
+        DateTime timeZone1Dt =
+                DateTime.parse(new DateTime(currentTimeMillis, DateTimeZone.forID(timeZoneId1)).toString(YYYY_MM_DD_HH_MM_SS_PATTERN),
+                        YYYY_MM_DD_HH_MM_SS_FORMATTER);
+        DateTime timeZone2Dt =
+                DateTime.parse(new DateTime(currentTimeMillis, DateTimeZone.forID(timeZoneId2)).toString(YYYY_MM_DD_HH_MM_SS_PATTERN),
+                        YYYY_MM_DD_HH_MM_SS_FORMATTER);
+
+        long timeZone1TimeMillis = timeZone1Dt.getMillis();
+        long timeZone2TimeMillis = timeZone2Dt.getMillis();
+
+
+        long differTimeSeconds = (timeZone1TimeMillis - timeZone2TimeMillis) / 1000;
+        return TimeZoneIdDifferTimeVO.builder().differHour((int) (differTimeSeconds / 3600))
+                .differMinute((int) (differTimeSeconds % 3600) / 60).build();
+    }
+
+    /**
+     * 获取指定时区对应UTC时区的月开始时间
+     *
+     * @param siteTimeZoneId
+     * @return
+     */
+    public static DateTime getMonthBeginDt(String siteTimeZoneId) {
+        // 获取家庭时区对应的开始时间
+        DateTime now = DateTime.now(DateTimeZone.forID(siteTimeZoneId));
+        DateTime fromDt = now.withDayOfMonth(1).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        // 获取家庭时区时间对应的UTC时间
+        TimeZoneIdDifferTimeVO differTimeVO = getDifferWithTimeZoneId(siteTimeZoneId, "UTC");
+        int differHour = differTimeVO.getDifferHour();
+        int differMinute = differTimeVO.getDifferMinute();
+        fromDt = fromDt.plusHours(-differHour).plusMinutes(-differMinute);
+        return fromDt;
+    }
+
+    public static DateTime getYearBeginDt(String siteTimeZoneId) {
+        // 获取家庭时区对应的开始时间
+        DateTime now = DateTime.now(DateTimeZone.forID(siteTimeZoneId));
+        DateTime fromDt =
+                now.withMonthOfYear(1).withDayOfMonth(1).withHourOfDay(0).withMinuteOfHour(0).withSecondOfMinute(0).withMillisOfSecond(0);
+        // 获取家庭时区时间对应的UTC时间
+        TimeZoneIdDifferTimeVO differTimeVO = getDifferWithTimeZoneId(siteTimeZoneId, "UTC");
+        int differHour = differTimeVO.getDifferHour();
+        int differMinute = differTimeVO.getDifferMinute();
+        fromDt = fromDt.plusHours(-differHour).plusMinutes(-differMinute);
+        return fromDt;
+    }
+
     /**
      * 生成首次重试时间
      *
@@ -521,30 +572,6 @@ public class SchneiderDateTimeUtils {
         Map<String, String> monthBeignEndDtMap = new HashMap<>();
 
         DateTime now = DateTime.now(DateTimeZone.forID(siteTimeZoneId));
-        monthBeignEndDtMap.put("date", String.valueOf(now.getMonthOfYear()));
-
-        String periodLabel = now.toString(YYYY_MM_PATTERN);
-        monthBeignEndDtMap.put("periodLabel", periodLabel);
-
-        DateTime startDateTime = now.plusMillis(-now.getMillisOfDay()).plusDays(-now.getDayOfMonth() + 1).withZone(DateTimeZone.UTC);
-        String from = startDateTime.toString(YYYY_MM_DD_T_HH_MM_SS_Z_PATTERN);
-        monthBeignEndDtMap.put("from", from);
-
-        DateTime endDateTime = now.dayOfMonth().withMaximumValue()
-                .withHourOfDay(startDateTime.getHourOfDay())
-                .withMinuteOfHour(startDateTime.getMinuteOfHour())
-                .withSecondOfMinute(startDateTime.getSecondOfMinute())
-                .withMillisOfSecond(startDateTime.getMillisOfSecond());
-        String to = endDateTime.toString(YYYY_MM_DD_T_HH_MM_SS_Z_PATTERN);
-        monthBeignEndDtMap.put("to", to);
-
-        monthBeignEndDtMap.put("queryType", EliqDateTypeEnum.MONTH.getGroupBy());
-
-        return monthBeignEndDtMap;
-    }
-
-    public static Map<String, String> getMonthBeginEndDtMap(DateTime now) {
-        Map<String, String> monthBeignEndDtMap = new HashMap<>();
         monthBeignEndDtMap.put("date", String.valueOf(now.getMonthOfYear()));
 
         String periodLabel = now.toString(YYYY_MM_PATTERN);

@@ -1,13 +1,17 @@
 package com.farid.artemis.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.farid.artemis.adapt.ISchneiderCloudEquipmentAdapterService;
 import com.farid.artemis.adapt.ISchneiderCloudMigrateAdapterService;
 import com.farid.artemis.adapt.ISchneiderCloudSiteAdapterService;
+import com.farid.artemis.domain.biz.equipment.EliqEquipmentBO;
+import com.farid.artemis.domain.biz.site.EECSiteBO;
 import com.farid.artemis.service.IHttpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author Banchao
@@ -23,6 +27,9 @@ public class HttpService implements IHttpService {
 
     @Resource
     private ISchneiderCloudMigrateAdapterService migrateAdapterService;
+
+    @Resource
+    private ISchneiderCloudEquipmentAdapterService cloudEquipmentAdapterService;
 
     private final static String DOMAIN = "https://fdcs-qa.wiser.schneider-electric.com/eec";
 
@@ -66,5 +73,15 @@ public class HttpService implements IHttpService {
     @Override
     public void migrateData() {
         migrateAdapterService.syncEquipmentEnergyHoursHistory(DOMAIN, "Test_update_location_id", "", "", "");
+    }
+
+    @Override
+    public EECSiteBO getSite(String siteId) {
+        return cloudSiteAdapterService.getCloudSite(DOMAIN, siteId);
+    }
+
+    @Override
+    public List<EliqEquipmentBO> getEquipments(String siteId) {
+        return cloudEquipmentAdapterService.getEquipments(DOMAIN, siteId);
     }
 }

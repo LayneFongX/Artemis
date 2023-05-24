@@ -1,7 +1,7 @@
 package com.farid.artemis.adapt;
 
 import com.alibaba.fastjson.JSONObject;
-import com.farid.artemis.domain.biz.site.EliqSiteBO;
+import com.farid.artemis.domain.biz.site.EECSiteBO;
 
 public interface ISchneiderCloudSiteAdapterService {
 
@@ -12,7 +12,7 @@ public interface ISchneiderCloudSiteAdapterService {
      * @param siteId
      * @return
      */
-    EliqSiteBO getCloudSite(String domain, String siteId);
+    EECSiteBO getCloudSite(String domain, String siteId);
 
     /**
      * 创建三方Site
