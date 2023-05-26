@@ -1,4 +1,4 @@
-package com.farid.artemis.proxy;
+package com.farid.artemis.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;

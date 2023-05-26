@@ -1,4 +1,4 @@
-package com.farid.artemis.proxy;
+package com.farid.artemis.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;

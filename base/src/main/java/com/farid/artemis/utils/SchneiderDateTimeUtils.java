@@ -1,4 +1,4 @@
-package com.farid.artemis.proxy;
+package com.farid.artemis.utils;
 
 
 import com.farid.artemis.domain.biz.timer.TimeZoneIdDifferTimeVO;
