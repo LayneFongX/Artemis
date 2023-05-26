@@ -1,4 +1,4 @@
-package com.farid.artemis.utils;
+package com.farid.artemis.proxy;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 

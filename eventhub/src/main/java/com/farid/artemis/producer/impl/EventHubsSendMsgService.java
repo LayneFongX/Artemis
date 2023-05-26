@@ -7,7 +7,7 @@ import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.farid.artemis.constant.EventHubsConstant;
 import com.farid.artemis.producer.IEventHubsSendMsgService;
-import com.farid.artemis.utils.EventHubsUtil;
+import com.farid.artemis.proxy.EventHubsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;

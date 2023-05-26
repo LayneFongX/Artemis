@@ -1,4 +1,4 @@
-package com.farid.artemis.utils;
+package com.farid.artemis.proxy;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

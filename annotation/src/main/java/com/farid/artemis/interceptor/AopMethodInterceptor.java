@@ -4,7 +4,7 @@ import com.farid.artemis.annotation.AtopPermissionAuth;
 import com.farid.artemis.config.AtopPermissionApolloConfig;
 import com.farid.artemis.domain.AtopPermissionAuthMeta;
 import com.farid.artemis.service.VerifyBizService;
-import com.farid.artemis.utils.ClassUtils;
+import com.farid.artemis.proxy.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;

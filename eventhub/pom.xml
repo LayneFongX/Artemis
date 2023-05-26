@@ -26,14 +26,15 @@
         </dependency>
 
         <dependency>
+            <groupId>com.farid.artemis</groupId>
+            <artifactId>redis</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-messaging-eventhubs</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.azure</groupId>-->
-<!--            <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>-->
-<!--        </dependency>-->
     </dependencies>
 
 </project>

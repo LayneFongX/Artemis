@@ -4,7 +4,7 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.farid.artemis.constant.EventHubsConstant;
-import com.farid.artemis.utils.EventHubsUtil;
+import com.farid.artemis.proxy.EventHubsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

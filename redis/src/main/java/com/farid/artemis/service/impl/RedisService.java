@@ -1,7 +1,7 @@
 package com.farid.artemis.service.impl;
 
 import com.farid.artemis.service.IRedisService;
-import com.farid.artemis.utils.CacheProxy;
+import com.farid.artemis.proxy.CacheProxy;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

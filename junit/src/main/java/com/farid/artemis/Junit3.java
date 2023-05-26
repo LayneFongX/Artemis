@@ -1,11 +1,10 @@
 package com.farid.artemis;
 
-import com.alibaba.fastjson.JSON;
 import com.farid.artemis.constant.SchneiderEliqConstant;
 import com.farid.artemis.domain.biz.timer.SolutionTimerBizVO;
 import com.farid.artemis.domain.biz.timer.TimeZoneIdDifferTimeVO;
-import com.farid.artemis.utils.SchneiderDateTimeUtils;
-import com.farid.artemis.utils.TimerUtils;
+import com.farid.artemis.proxy.SchneiderDateTimeUtils;
+import com.farid.artemis.proxy.TimerUtils;
 import org.joda.time.DateTime;
 
 import java.util.Objects;
@@ -21,12 +20,10 @@ public class Junit3 {
     private final static char CHAR_0 = '0';
 
     public static void main(String[] args) {
-        SolutionTimerBizVO solutionTimerBizVO = new SolutionTimerBizVO();
-        solutionTimerBizVO.setLoops("0101001");
-        solutionTimerBizVO.setTimeZoneId("Asia/Shanghai");
-        solutionTimerBizVO.setLocalTime(4*3600L);
-        covertTimerLoopsByTimeZoneId(solutionTimerBizVO,"Europe/Stockholm");
-        System.out.println(JSON.toJSON(solutionTimerBizVO));
+        // String loopTimerBizVOJson = "{\"ext\":\"{\\\"actions\\\":{\\\"101\\\":\\\"ON\\\"},\\\"enableNotify\\\":true}\",\"note\":\"Fri\",\"gmtModified\":1685072974674,\"bizType\":303478,\"isLocalTimer\":false,\"timerStatus\":2,\"resType\":1,\"timeZoneId\":\"Asia/Shanghai\",\"loops\":\"0000010\",\"resId\":\"vdevo168498543838310\",\"localTime\":42600,\"uid\":\"ay1666340943028jaU54\",\"bizId\":\"oyEFmm0vWe7MSEMqLiLAy30ci08hhe\",\"localDate\":\"\",\"category\":\"schneider_pte_14A_loops_timer\"}";
+        // LoopTimerVO loopTimerVO = JSON.parseObject(loopTimerBizVOJson,LoopTimerVO.class);
+        // SolutionTimerBizVO solutionTimerBizVO = OrikaUtil.convert(loopTimerVO, SolutionTimerBizVO.class);
+        // covertTimerLoopsByTimeZoneId(solutionTimerBizVO, timeZoneId);
     }
 
     private static void covertTimerLoopsByTimeZoneId(SolutionTimerBizVO solutionTimerBizVO, String timeZoneId) {

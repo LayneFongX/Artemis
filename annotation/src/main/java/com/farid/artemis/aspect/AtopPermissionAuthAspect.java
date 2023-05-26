@@ -6,7 +6,7 @@ import com.farid.artemis.domain.AtopPermissionAuthMeta;
 import com.farid.artemis.enums.VerifyBusinessEnum;
 import com.farid.artemis.enums.VerifyMethodEnum;
 import com.farid.artemis.service.VerifyBizService;
-import com.farid.artemis.utils.ClassUtils;
+import com.farid.artemis.proxy.ClassUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.ProceedingJoinPoint;

@@ -2,8 +2,9 @@ package com.farid.artemis.listener;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
+import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.farid.artemis.constant.EventHubsConstant;
-import com.farid.artemis.utils.EventHubsUtil;
+import com.farid.artemis.proxy.EventHubsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,8 @@ import javax.annotation.PostConstruct;
 @Component
 public class EventHubsConsumer4 {
 
+
+
     @PostConstruct
     public void init() {
         startConsumer();
@@ -21,11 +24,7 @@ public class EventHubsConsumer4 {
 
 
     public void startConsumer() {
-        // BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
-        //         .connectionString(EventHubsConstant.EVENT_HUBS_EEC_STORAGE_CONNECTION_STRING)
-        //         .containerName(EventHubsConstant.EVENT_HUBS_EEC_STORAGE_CONTAINER_NAME)
-        //         .buildAsyncClient();
-        //
+
         // EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
         //         .connectionString(EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_CONNECTION_STRING, EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_EVENT_HUB_NAME)
         //         .consumerGroup(EventHubsConstant.EVENT_HUBS_EEC_GROUP_NAME)
@@ -43,7 +42,27 @@ public class EventHubsConsumer4 {
         //             log.info("EventHubsConsumer4 startConsumer processError occurred in partition processor for partition {}, %s.%n",
         //                     errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable());
         //         })
-        //         .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
+        //         .checkpointStore(new CheckpointStore() {
+        //             @Override
+        //             public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        //                 return null;
+        //             }
+        //
+        //             @Override
+        //             public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
+        //                 return null;
+        //             }
+        //
+        //             @Override
+        //             public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        //                 return null;
+        //             }
+        //
+        //             @Override
+        //             public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
+        //                 return null;
+        //             }
+        //         })
         //         .loadBalancingStrategy(LoadBalancingStrategy.BALANCED)
         //         .buildEventProcessorClient();
         //
@@ -55,15 +74,10 @@ public class EventHubsConsumer4 {
                 .retryOptions(EventHubsUtil.getAmqpRetryOptions())
                 .buildAsyncConsumerClient();
 
-        // Checkpointer checkpointer = consumerClient.getCheckpointer(partitionId);
-        // String checkpoint = readCheckpointFromStorage();
-        //
-        // consumerClient.receive().subscribe(event -> {
-        //     PartitionContext partitionContext = event.getPartitionContext();
-        //     log.info("EventHubsConsumer4 startListening... received event,partionId = {},  msg = {}",partitionContext.getPartitionId(),
-        //             event.getData().getBodyAsString());
-        // });
-        //
-        // CheckpointStore checkpointStore = new InMemoryCheckpointStore();
+        consumerClient.receive().subscribe(event -> {
+            PartitionContext partitionContext = event.getPartitionContext();
+            log.info("EventHubsConsumer4 startListening... received event,partionId = {},  msg = {}",partitionContext.getPartitionId(),
+                    event.getData().getBodyAsString());
+        });
     }
 }

@@ -1,6 +1,6 @@
 package com.farid.artemis.domain.base;
 
-import com.farid.artemis.utils.NoNullFieldStringStyle;
+import com.farid.artemis.proxy.NoNullFieldStringStyle;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
