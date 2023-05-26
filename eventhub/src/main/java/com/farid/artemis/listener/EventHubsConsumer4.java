@@ -1,6 +1,5 @@
 package com.farid.artemis.listener;
 
-import com.alibaba.fastjson.JSON;
 import com.azure.messaging.eventhubs.*;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -90,7 +89,8 @@ public class EventHubsConsumer4 {
                                     "Checkpoint is either null, or both the offset and the sequence number are null.");
                         }
                         return Mono.fromRunnable(() -> {
-                            String checkPointSpaceCacheKey = EventHubsUtil.getCheckPointSpaceCacheKey(checkpoint.getFullyQualifiedNamespace(),
+                            String checkPointSpaceCacheKey = EventHubsUtil.getCheckPointSpaceCacheKey(
+                                    checkpoint.getFullyQualifiedNamespace(),
                                     checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
 
                             String checkPointPartitionCacheKey = EventHubsUtil.getCheckPointPartitionCacheKey(
@@ -103,7 +103,7 @@ public class EventHubsConsumer4 {
                                 checkPointPartitionCacheKeySet.add(checkPointPartitionCacheKey);
                                 cacheProxy.set(checkPointSpaceCacheKey, checkPointPartitionCacheKeySet);
                             }
-                            cacheProxy.set(checkPointPartitionCacheKey, JSON.toJSONString(checkpoint));
+                            cacheProxy.set(checkPointPartitionCacheKey, checkpoint);
                         });
                     }
                 })
