@@ -2,7 +2,6 @@ package com.farid.artemis.listener;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.farid.artemis.constant.EventHubsConstant;
 import com.farid.artemis.utils.EventHubsUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -12,13 +11,14 @@ import javax.annotation.PostConstruct;
 
 @Slf4j
 @Component
-public class EventHubsConsumer2 {
+public class EventHubsConsumer4 {
 
     @PostConstruct
     public void init() {
         startConsumer();
-        log.info("EventHubsConsumer2 init success");
+        log.info("EventHubsConsumer4 init success");
     }
+
 
     public void startConsumer() {
         // BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
@@ -34,13 +34,13 @@ public class EventHubsConsumer2 {
         //             PartitionContext partitionContext = eventContext.getPartitionContext();
         //             EventData eventData = eventContext.getEventData();
         //
-        //             log.info("EventHubsConsumer2 startConsumer processEvent from partition {} with sequence number {} with body {}",
+        //             log.info("EventHubsConsumer4 startConsumer processEvent from partition {} with sequence number {} with body {}",
         //                     partitionContext.getPartitionId(), eventData.getSequenceNumber(), eventData.getBodyAsString());
         //             // 手动更新检查点
         //             eventContext.updateCheckpointAsync().subscribe();
         //         })
         //         .processError(errorContext -> {
-        //             log.info("EventHubsConsumer2 startConsumer processError occurred in partition processor for partition {}, %s.%n",
+        //             log.info("EventHubsConsumer4 startConsumer processError occurred in partition processor for partition {}, %s.%n",
         //                     errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable());
         //         })
         //         .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
@@ -55,10 +55,15 @@ public class EventHubsConsumer2 {
                 .retryOptions(EventHubsUtil.getAmqpRetryOptions())
                 .buildAsyncConsumerClient();
 
-        consumerClient.receive().subscribe(event -> {
-            PartitionContext partitionContext = event.getPartitionContext();
-            log.info("EventHubsConsumer2 startListening... received event,partionId = {},  msg = {}",partitionContext.getPartitionId(),
-                    event.getData().getBodyAsString());
-        });
+        // Checkpointer checkpointer = consumerClient.getCheckpointer(partitionId);
+        // String checkpoint = readCheckpointFromStorage();
+        //
+        // consumerClient.receive().subscribe(event -> {
+        //     PartitionContext partitionContext = event.getPartitionContext();
+        //     log.info("EventHubsConsumer4 startListening... received event,partionId = {},  msg = {}",partitionContext.getPartitionId(),
+        //             event.getData().getBodyAsString());
+        // });
+        //
+        // CheckpointStore checkpointStore = new InMemoryCheckpointStore();
     }
 }

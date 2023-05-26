@@ -1,10 +1,8 @@
 package com.farid.artemis.listener;
 
-import com.azure.messaging.eventhubs.*;
-import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.farid.artemis.constant.EventHubsConstant;
 import com.farid.artemis.utils.EventHubsUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -23,32 +21,44 @@ public class EventHubsConsumer1 {
     }
 
     public void startConsumer() {
-        BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
-                .connectionString(EventHubsConstant.EVENT_HUBS_EEC_STORAGE_CONNECTION_STRING)
-                .containerName(EventHubsConstant.EVENT_HUBS_EEC_STORAGE_CONTAINER_NAME)
-                .buildAsyncClient();
+        // BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
+        //         .connectionString(EventHubsConstant.EVENT_HUBS_EEC_STORAGE_CONNECTION_STRING)
+        //         .containerName(EventHubsConstant.EVENT_HUBS_EEC_STORAGE_CONTAINER_NAME)
+        //         .buildAsyncClient();
+        //
+        // EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+        //         .connectionString(EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_CONNECTION_STRING, EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_EVENT_HUB_NAME)
+        //         .consumerGroup(EventHubsConstant.EVENT_HUBS_EEC_GROUP_NAME)
+        //         .retryOptions(EventHubsUtil.getAmqpRetryOptions())
+        //         .processEvent(eventContext -> {
+        //             PartitionContext partitionContext = eventContext.getPartitionContext();
+        //             EventData eventData = eventContext.getEventData();
+        //
+        //             log.info("EventHubsConsumer1 startConsumer processEvent from partition {} with sequence number {} with body {}",
+        //                     partitionContext.getPartitionId(), eventData.getSequenceNumber(), eventData.getBodyAsString());
+        //             // 手动更新检查点
+        //             eventContext.updateCheckpointAsync().subscribe();
+        //         })
+        //         .processError(errorContext -> {
+        //             log.info("EventHubsConsumer1 startConsumer processError occurred in partition processor for partition {}, %s.%n",
+        //                     errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable());
+        //         })
+        //         .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
+        //         .loadBalancingStrategy(LoadBalancingStrategy.BALANCED)
+        //         .buildEventProcessorClient();
+        //
+        // eventProcessorClient.start();
 
-        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+        EventHubConsumerAsyncClient consumerClient = new EventHubClientBuilder()
                 .connectionString(EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_CONNECTION_STRING, EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_EVENT_HUB_NAME)
-                .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .consumerGroup(EventHubsConstant.EVENT_HUBS_EEC_GROUP_NAME)
                 .retryOptions(EventHubsUtil.getAmqpRetryOptions())
-                .processEvent(eventContext -> {
-                    PartitionContext partitionContext = eventContext.getPartitionContext();
-                    EventData eventData = eventContext.getEventData();
+                .buildAsyncConsumerClient();
 
-                    log.info("EventHubsConsumer1 startConsumer processEvent from partition {} with sequence number {} with body {}",
-                            partitionContext.getPartitionId(), eventData.getSequenceNumber(), eventData.getBodyAsString());
-                    // 手动更新检查点
-                    eventContext.updateCheckpointAsync().subscribe();
-                })
-                .processError(errorContext -> {
-                    log.info("EventHubsConsumer1 startConsumer processError occurred in partition processor for partition {}, %s.%n",
-                            errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable());
-                })
-                .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
-                .loadBalancingStrategy(LoadBalancingStrategy.BALANCED)
-                .buildEventProcessorClient();
-
-        eventProcessorClient.start();
+        consumerClient.receive().subscribe(event -> {
+            PartitionContext partitionContext = event.getPartitionContext();
+            log.info("EventHubsConsumer1 startListening... received event,partionId = {},  msg = {}",partitionContext.getPartitionId(),
+                    event.getData().getBodyAsString());
+        });
     }
 }

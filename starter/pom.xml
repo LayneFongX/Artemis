@@ -76,6 +76,12 @@
             <artifactId>log</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.farid.artemis</groupId>
+            <artifactId>redis</artifactId>
+        </dependency>
+
+
     </dependencies>
 
 </project>

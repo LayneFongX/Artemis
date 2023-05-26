@@ -6,11 +6,17 @@ package com.farid.artemis.constant;
  */
 public class EventHubsConstant {
 
-    public final static String EVENT_HUBS_EEC_NAME_SPACE_CONNECTION_STRING = "Endpoint=sb://farid-event-hubs.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=moHMVM6lLekAbdi9y/TJLIX/yvKxQrynx+AEhDFqCwQ=";
+    // public final static String EVENT_HUBS_EEC_NAME_SPACE_CONNECTION_STRING = "Endpoint=sb://farid-event-hubs.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=moHMVM6lLekAbdi9y/TJLIX/yvKxQrynx+AEhDFqCwQ=";
 
-    public final static String EVENT_HUBS_EEC_NAME_SPACE_EVENT_HUB_NAME = "myqaeventhub";
+    public final static String EVENT_HUBS_EEC_NAME_SPACE_CONNECTION_STRING = "Endpoint=sb://fdcs-eventhub-test-ns.servicebus.windows.net/;SharedAccessKeyName=eecconsumer;SharedAccessKey=nfbXMTghFSBJ+MEBVve1TlUEueSLOHq4i+AEhAgO2J8=";
+
+    // public final static String EVENT_HUBS_EEC_NAME_SPACE_EVENT_HUB_NAME = "myqaeventhub";
+
+    public final static String EVENT_HUBS_EEC_NAME_SPACE_EVENT_HUB_NAME = "enode-eventhub-test";
 
     public static final String EVENT_HUBS_EEC_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=fdstorageaccount;AccountKey=VFgne15epNUcs0ruPqbiMSNakmJgNS3BsEUYq1ZWYeAHUsBzlA9WCmlxwGUpPF1uxXJwCpnqR30B+AStxqt1Eg==;EndpointSuffix=core.windows.net";
 
     public static final String EVENT_HUBS_EEC_STORAGE_CONTAINER_NAME = "mycontainer";
+
+    public static final String EVENT_HUBS_EEC_GROUP_NAME = "tuya-testing";
 }
