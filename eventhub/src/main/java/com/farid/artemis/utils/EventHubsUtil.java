@@ -1,7 +1,9 @@
 package com.farid.artemis.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.eventhubs.models.Checkpoint;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
 
 import java.time.Duration;
 
@@ -20,18 +22,38 @@ public class EventHubsUtil {
         return retryOptions;
     }
 
-    public static String getCheckPointSpaceCacheKey(String fullyQualifiedNamespace, String eventHubName,
-                                                    String consumerGroup) {
-        return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup;
+    public static String buildOwnershipKey(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        return String.format("ownership:%s:%s:%s", fullyQualifiedNamespace, eventHubName, consumerGroup);
     }
 
-    public static String getCheckPointPartitionCacheKey(String fullyQualifiedNamespace, String eventHubName,
-                                                      String consumerGroup, String partitionId) {
-        return fullyQualifiedNamespace + "/" + eventHubName + "/" + consumerGroup + "/" + partitionId;
+    public static String buildOwnershipPartitionKey(String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
+                                                    String partitionId) {
+        return String.format("ownership:%s:%s:%s:%s", fullyQualifiedNamespace, eventHubName, consumerGroup, partitionId);
     }
 
-    public static Boolean isCheckpointValid(Checkpoint checkpoint) {
-        return !(checkpoint == null || (checkpoint.getOffset() == null && checkpoint.getSequenceNumber() == null));
+    public static String buildCheckpointKey(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+        return String.format("checkpoint:%s:%s:%s", fullyQualifiedNamespace, eventHubName, consumerGroup);
+    }
+
+    public static String buildCheckpointPartitionKey(String fullyQualifiedNamespace, String eventHubName, String consumerGroup,
+                                                    String partitionId) {
+        return String.format("checkpoint:%s:%s:%s:%s", fullyQualifiedNamespace, eventHubName, consumerGroup, partitionId);
+    }
+
+    public static String serializeOwnership(PartitionOwnership ownership) {
+        return JSON.toJSONString(ownership);
+    }
+
+    public static PartitionOwnership deserializeOwnership(String ownershipJson) {
+        return JSON.parseObject(ownershipJson, PartitionOwnership.class);
+    }
+
+    public static String serializeCheckpoint(Checkpoint checkpoint) {
+        return JSON.toJSONString(checkpoint);
+    }
+
+    public static Checkpoint deserializeCheckpoint(String checkpointJson) {
+        return JSON.parseObject(checkpointJson, Checkpoint.class);
     }
 
 }

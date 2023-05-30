@@ -19,6 +19,6 @@ public class RedisService implements IRedisService {
 
     @Override
     public void add(String key, String value) {
-        cacheProxy.set(key, value);
+        // cacheProxy.set(key, value);
     }
 }

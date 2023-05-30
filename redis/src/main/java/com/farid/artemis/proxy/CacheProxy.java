@@ -1,14 +1,19 @@
 package com.farid.artemis.proxy;
 
-import org.checkerframework.checker.units.qual.K;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @SuppressWarnings("all")
@@ -17,103 +22,81 @@ public class CacheProxy {
     @Resource
     private RedisTemplate redisTemplate;
 
-    public <K, V> void set(K key, V value) {
+    public void setValue(String key, String value) {
         redisTemplate.opsForValue().set(key, value);
     }
-    
-    public <K, V> void set(K key, V value, long timeout, TimeUnit unit) {
-        redisTemplate.opsForValue().set(key, value, timeout, unit);
+
+    public Boolean setIfAbsent(String key, String value) {
+        return redisTemplate.opsForValue().setIfAbsent(key, value);
     }
 
-
-    public void batchSet(Map keyValueMap) {
-        redisTemplate.opsForValue().multiSet(keyValueMap);
+    public String getValue(String key) {
+        return (String) redisTemplate.opsForValue().get(key);
     }
 
-
-    public <K, V> Boolean setIfAbsent(K key, V value, long timeout, TimeUnit timeUnit) {
-        return redisTemplate.opsForValue().setIfAbsent(key, value, timeout, timeUnit);
+    public void sadd(String key, String value) {
+        redisTemplate.opsForSet().add(key, value);
     }
 
-    public <V, K> V get(K key) {
-        return (V) redisTemplate.opsForValue().get(key);
-    }
-    
-    public <K> Long getLong(K key) {
-        Number value = this.get(key);
-        if (value == null) {
-            return null;
-        }
-        return value.longValue();
-    }
-    
-    public <K> Integer getInteger(K key) {
-        Number value = this.get(key);
-        if (value == null) {
-            return null;
-        }
-        return value.intValue();
+    public Set<String> smget(String key) {
+        return redisTemplate.opsForSet().members(key);
     }
 
-    public void increment(String key, long delta) {
-        redisTemplate.opsForValue().increment(key, delta);
+    public void hset(byte[] key, byte[] field, byte[] value) {
+        redisTemplate.opsForHash().put(key, field, value);
     }
 
-
-    public void delete(String key) {
-        redisTemplate.delete(key);
+    public List<byte[]> hmget(byte[] key, byte[]... fields) {
+        return redisTemplate.opsForHash().multiGet(key, Arrays.asList(fields));
     }
 
-
-    public void delete(List<String> keys) {
-        redisTemplate.delete(keys);
+    public Set<byte[]> smembers(byte[] key) {
+        return redisTemplate.opsForSet().members(key);
     }
 
-    public void deleteBatchSamePrefix(Set<String> cacheKeys) {
-        redisTemplate.delete(cacheKeys);
+    public Long sadd(byte[] key, byte[]... members) {
+        return redisTemplate.opsForSet().add(key, members);
     }
 
-    public <K> Boolean hasKey(K key) {
+    public Boolean exists(byte[] key) {
         return redisTemplate.hasKey(key);
     }
 
-
-    public <K> boolean tryLock(K key, long waitTime, long leaseTime) {
-        // return redisTemplate.opsForValue().tryLock(key, waitTime, leaseTime);
-        return false;
+    public void watch(byte[]... keys) {
+        redisTemplate.execute((RedisCallback<Void>) connection -> {
+            connection.watch(keys);
+            return null;
+        });
     }
 
-
-    public <K> void unlock(K key) {
-        // redisTemplate.opsForValue().unlock(key);
+    public Object performTransaction(byte[] key, byte[] field, byte[] value) {
+        return redisTemplate.execute(new SessionCallback<Object>() {
+            @Override
+            public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
+                operations.multi();
+                operations.opsForHash().put((K) key, field, value);
+                return operations.exec();
+            }
+        });
     }
 
-    public <K, HK, V> void putHash(K key, HK hashKey, V value) {
-        redisTemplate.opsForHash().put(key, hashKey, value);
+    public Long time() {
+        return (Long) redisTemplate.execute((RedisCallback<Long>) connection -> {
+            return connection.time();
+        });
     }
 
+    public Long objectIdletime(byte[] key) {
+        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
+        byte[] rawKey = redisTemplate.getKeySerializer().serialize(Objects.requireNonNull(stringSerializer.deserialize(key)));
 
-    public <K, HK> HK getHash(K key, Object hashKey) {
-        return (HK) redisTemplate.opsForHash().get(key, hashKey);
+        return (Long) redisTemplate.execute((RedisCallback<Long>) connection -> {
+            String command = "OBJECT";
+            String subCommand = "IDLETIME";
+
+            Object result = connection.execute(command, subCommand.getBytes(), rawKey);
+            return (Long) result;
+        });
     }
 
-
-    public void deleteHash(K key, Object... hashKeys) {
-        redisTemplate.opsForHash().delete(key, hashKeys);
-    }
-
-
-    public <K> Boolean expire(K key, long timeout, TimeUnit unit) {
-        return redisTemplate.expire(key, timeout, unit);
-    }
-
-
-    public <K, V> List<V> opsListRange(K key, long start, long end) {
-        return redisTemplate.opsForList().range(key, start, end);
-    }
-
-
-    public <K> Long opsListSize(K key) {
-        return redisTemplate.opsForList().size(key);
-    }
 }
