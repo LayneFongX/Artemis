@@ -58,7 +58,7 @@ public class CacheProxy {
         return redisTemplate.opsForSet().add(key, members);
     }
 
-    public Boolean exists(byte[] key) {
+    public Boolean exists(Object key) {
         return redisTemplate.hasKey(key);
     }
 
@@ -97,6 +97,10 @@ public class CacheProxy {
             Object result = connection.execute(command, subCommand.getBytes(), rawKey);
             return (Long) result;
         });
+    }
+
+    public void deleteKey(String key){
+        redisTemplate.delete(key);
     }
 
 }

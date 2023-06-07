@@ -18,11 +18,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -31,15 +29,25 @@ public class EventHubsConsumer1 {
     @Resource
     private CacheProxy cacheProxy;
 
+    private EventProcessorClient eventProcessorClient;
+
     @PostConstruct
     public void init() {
+        clearOwnershipCache();
         startConsumer();
         log.info("EventHubsConsumer1 init success");
     }
 
+    @PreDestroy
+    public void destroy() {
+        log.info("EventHubsConsumer1 destroy success");
+        eventProcessorClient.stop();
+        log.info("EventHubsConsumer1 destroy success2");
+    }
+
 
     public void startConsumer() {
-        EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
+        eventProcessorClient = new EventProcessorClientBuilder()
                 .connectionString(EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_CONNECTION_STRING, EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_EVENT_HUB_NAME)
                 .consumerGroup(EventHubsConstant.EVENT_HUBS_EEC_GROUP_NAME)
                 .processEvent(eventContext -> {
@@ -48,105 +56,113 @@ public class EventHubsConsumer1 {
                     log.info("EventHubsConsumer1 startConsumer processEvent from partition = {} with sequence number = {} " +
                                     "with body = {}", partitionContext.getPartitionId(), eventData.getSequenceNumber(),
                             eventData.getBodyAsString());
-
                     eventContext.updateCheckpoint();
                 })
                 .processError(errorContext -> {
                     log.info("EventHubsConsumer1 startConsumer processError occurred in partition processor for partition {}",
                             errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable());
                 })
-                .checkpointStore(new CheckpointStore() {
-                    @Override
-                    public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
-                        List<PartitionOwnership> claimedOwnerships = new ArrayList<>();
-
-                        for (PartitionOwnership ownership : requestedPartitionOwnerships) {
-                            ownership.setLastModifiedTime(System.currentTimeMillis());
-                            ownership.setETag(UUID.randomUUID().toString());
-
-                            String ownershipKey = EventHubsUtil.buildOwnershipKey(ownership.getFullyQualifiedNamespace(),
-                                    ownership.getEventHubName(), ownership.getConsumerGroup());
-                            String ownershipPartitionKey = EventHubsUtil.buildOwnershipPartitionKey(ownership.getFullyQualifiedNamespace(),
-                                    ownership.getEventHubName(), ownership.getConsumerGroup(), ownership.getPartitionId());
-                            boolean success = cacheProxy.setIfAbsent(ownershipPartitionKey, EventHubsUtil.serializeOwnership(ownership));
-                            if (!success) {
-                                continue;
-                            }
-                            cacheProxy.sadd(ownershipKey, ownershipPartitionKey);
-                            claimedOwnerships.add(ownership);
-                        }
-                        return Flux.fromIterable(claimedOwnerships);
-                    }
-
-                    @Override
-                    public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
-                        String ownershipKey = EventHubsUtil.buildOwnershipKey(fullyQualifiedNamespace, eventHubName, consumerGroup);
-                        Set<String> ownershipPartitionKeySet = cacheProxy.smget(ownershipKey);
-                        List<PartitionOwnership> partitionOwnerships = new ArrayList<>();
-
-                        for (String ownershipPartitionKey : ownershipPartitionKeySet) {
-                            String ownershipJson = cacheProxy.getValue(ownershipPartitionKey);
-                            if (StringUtils.isBlank(ownershipJson)) {
-                                continue;
-                            }
-                            PartitionOwnership ownership = EventHubsUtil.deserializeOwnership(ownershipJson);
-                            partitionOwnerships.add(ownership);
-                        }
-                        return Flux.fromIterable(partitionOwnerships);
-                    }
-
-                    @Override
-                    public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
-                        String ownershipKey = EventHubsUtil.buildOwnershipKey(checkpoint.getFullyQualifiedNamespace(),
-                                checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
-                        String ownershipPartitionKey = EventHubsUtil.buildOwnershipPartitionKey(checkpoint.getFullyQualifiedNamespace(),
-                                checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
-
-                        String checkpointKey = EventHubsUtil.buildCheckpointKey(checkpoint.getFullyQualifiedNamespace(),
-                                checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
-                        String checkpointPartitionKey = EventHubsUtil.buildCheckpointPartitionKey(checkpoint.getFullyQualifiedNamespace(),
-                                checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
-
-
-                        return Mono.fromRunnable(() -> {
-                            String ownershipJson = cacheProxy.getValue(ownershipPartitionKey);
-                            if (StringUtils.isNotBlank(ownershipJson)) {
-                                PartitionOwnership ownership = JSON.parseObject(ownershipJson, PartitionOwnership.class);
-                                ownership.setLastModifiedTime(System.currentTimeMillis());
-                                ownership.setETag(UUID.randomUUID().toString());
-                                cacheProxy.setValue(ownershipPartitionKey, JSON.toJSONString(ownership));
-                                log.info("EventHubsConsumer1 updateCheckpoint step-01 ownershipKey = {}," +
-                                                "ownershipPartitionKey = {},ownershipJson = {},ownership = {}",
-                                        ownershipKey, ownershipPartitionKey, ownershipJson, JSON.toJSON(ownership));
-                            }
-                            cacheProxy.sadd(checkpointKey, checkpointPartitionKey);
-                            log.info("EventHubsConsumer1 updateCheckpoint step-02 checkpointKey = {},checkpointPartitionKey = {}",
-                                    checkpointKey, checkpointPartitionKey);
-                            cacheProxy.setValue(checkpointPartitionKey, EventHubsUtil.serializeCheckpoint(checkpoint));
-                            log.info("EventHubsConsumer1 updateCheckpoint step-03 checkpointPartitionKey = {},checkpoint = {}",
-                                    checkpointPartitionKey, JSON.toJSON(checkpoint));
-                        });
-                    }
-
-                    @Override
-                    public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
-                        String checkpointKey = EventHubsUtil.buildCheckpointKey(fullyQualifiedNamespace, eventHubName, consumerGroup);
-                        Set<String> checkpointPartitionKeySet = cacheProxy.smget(checkpointKey);
-
-                        List<Checkpoint> checkpoints = new ArrayList<>();
-                        for (String checkpointPartitionKey : checkpointPartitionKeySet) {
-                            String checkpointJson = cacheProxy.getValue(checkpointPartitionKey);
-                            if (StringUtils.isBlank(checkpointJson)) {
-                                continue;
-                            }
-                            Checkpoint checkpoint = EventHubsUtil.deserializeCheckpoint(checkpointJson);
-                            checkpoints.add(checkpoint);
-                        }
-                        return Flux.fromIterable(checkpoints);
-                    }
-                })
+                .checkpointStore(getCheckpointStore())
                 .buildEventProcessorClient();
         eventProcessorClient.start();
     }
 
+    private CheckpointStore getCheckpointStore() {
+        return new CheckpointStore() {
+            @Override
+            public Flux<PartitionOwnership> claimOwnership(List<PartitionOwnership> requestedPartitionOwnerships) {
+                List<PartitionOwnership> claimedOwnerships = new ArrayList<>();
+                for (PartitionOwnership ownership : requestedPartitionOwnerships) {
+                    String ownershipKey = EventHubsUtil.buildOwnershipKey(ownership.getFullyQualifiedNamespace(),
+                            ownership.getEventHubName(), ownership.getConsumerGroup());
+                    String ownershipPartitionKey = EventHubsUtil.buildOwnershipPartitionKey(ownership.getFullyQualifiedNamespace(),
+                            ownership.getEventHubName(), ownership.getConsumerGroup(), ownership.getPartitionId());
+
+                    ownership.setLastModifiedTime(System.currentTimeMillis());
+                    ownership.setETag(UUID.randomUUID().toString());
+
+                    String ownershipPartitionValue = cacheProxy.getValue(ownershipPartitionKey);
+                    if (StringUtils.isBlank(ownershipPartitionValue)) {
+                        cacheProxy.setValue(ownershipPartitionKey, JSON.toJSONString(ownership));
+                        cacheProxy.sadd(ownershipKey, ownershipPartitionKey);
+                        claimedOwnerships.add(ownership);
+                        continue;
+                    }
+
+                    String requestOwnerId = ownership.getOwnerId();
+                    String cacheOwnerId = JSON.parseObject(ownershipPartitionValue, PartitionOwnership.class).getOwnerId();
+                    if (!Objects.equals(requestOwnerId, cacheOwnerId)) {
+                        continue;
+                    }
+
+                    claimedOwnerships.add(ownership);
+                }
+                return Flux.fromIterable(claimedOwnerships);
+            }
+
+            @Override
+            public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+                String ownershipKey = EventHubsUtil.buildOwnershipKey(fullyQualifiedNamespace, eventHubName, consumerGroup);
+                Set<String> ownershipPartitionKeySet = cacheProxy.smget(ownershipKey);
+                List<PartitionOwnership> partitionOwnerships = new ArrayList<>();
+
+                for (String ownershipPartitionKey : ownershipPartitionKeySet) {
+                    String ownershipJson = cacheProxy.getValue(ownershipPartitionKey);
+                    if (StringUtils.isBlank(ownershipJson)) {
+                        continue;
+                    }
+                    partitionOwnerships.add(EventHubsUtil.deserializeOwnership(ownershipJson));
+                }
+                return Flux.fromIterable(partitionOwnerships);
+            }
+
+            @Override
+            public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
+                String checkpointKey = EventHubsUtil.buildCheckpointKey(checkpoint.getFullyQualifiedNamespace(),
+                        checkpoint.getEventHubName(), checkpoint.getConsumerGroup());
+                String checkpointPartitionKey = EventHubsUtil.buildCheckpointPartitionKey(checkpoint.getFullyQualifiedNamespace(),
+                        checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
+
+                String ownershipPartitionKey = EventHubsUtil.buildOwnershipPartitionKey(checkpoint.getFullyQualifiedNamespace(),
+                        checkpoint.getEventHubName(), checkpoint.getConsumerGroup(), checkpoint.getPartitionId());
+
+                return Mono.fromRunnable(() -> {
+                    String ownershipPartitionValue = cacheProxy.getValue(ownershipPartitionKey);
+                    PartitionOwnership ownership = JSON.parseObject(ownershipPartitionValue, PartitionOwnership.class);
+                    ownership.setLastModifiedTime(System.currentTimeMillis());
+                    cacheProxy.setValue(ownershipPartitionKey, JSON.toJSONString(ownership));
+
+                    cacheProxy.sadd(checkpointKey, checkpointPartitionKey);
+                    cacheProxy.setValue(checkpointPartitionKey, EventHubsUtil.serializeCheckpoint(checkpoint));
+                });
+            }
+
+            @Override
+            public Flux<Checkpoint> listCheckpoints(String fullyQualifiedNamespace, String eventHubName, String consumerGroup) {
+                String checkpointKey = EventHubsUtil.buildCheckpointKey(fullyQualifiedNamespace, eventHubName, consumerGroup);
+                Set<String> checkpointPartitionKeySet = cacheProxy.smget(checkpointKey);
+
+                List<Checkpoint> checkpoints = new ArrayList<>();
+                for (String checkpointPartitionKey : checkpointPartitionKeySet) {
+                    String checkpointJson = cacheProxy.getValue(checkpointPartitionKey);
+                    if (StringUtils.isBlank(checkpointJson)) {
+                        continue;
+                    }
+                    Checkpoint checkpoint = EventHubsUtil.deserializeCheckpoint(checkpointJson);
+                    checkpoints.add(checkpoint);
+                }
+                return Flux.fromIterable(checkpoints);
+            }
+        };
+    }
+
+    private void clearOwnershipCache() {
+        String ownershipKey = EventHubsUtil.buildOwnershipKey(EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE,
+                EventHubsConstant.EVENT_HUBS_EEC_NAME_SPACE_EVENT_HUB_NAME, EventHubsConstant.EVENT_HUBS_EEC_GROUP_NAME);
+        Set<String> ownershipPartitionKeySet = cacheProxy.smget(ownershipKey);
+        for (String ownershipPartitionKey : ownershipPartitionKeySet) {
+            cacheProxy.deleteKey(ownershipPartitionKey);
+        }
+        cacheProxy.deleteKey(ownershipKey);
+    }
 }

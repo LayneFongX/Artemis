@@ -13,6 +13,8 @@ import java.time.Duration;
  */
 public class EventHubsUtil {
 
+    private static final String CONNECTION_STRING_ENDFIX = ".servicebus.windows.net";
+
     public static AmqpRetryOptions getAmqpRetryOptions(){
         AmqpRetryOptions retryOptions = new AmqpRetryOptions();
         retryOptions.setMaxRetries(3);  // 设置最大重试次数
