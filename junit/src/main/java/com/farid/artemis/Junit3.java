@@ -7,7 +7,10 @@ import com.farid.artemis.utils.SchneiderDateTimeUtils;
 import com.farid.artemis.utils.TimerUtils;
 import org.joda.time.DateTime;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @Author Banchao
@@ -24,6 +27,42 @@ public class Junit3 {
         // LoopTimerVO loopTimerVO = JSON.parseObject(loopTimerBizVOJson,LoopTimerVO.class);
         // SolutionTimerBizVO solutionTimerBizVO = OrikaUtil.convert(loopTimerVO, SolutionTimerBizVO.class);
         // covertTimerLoopsByTimeZoneId(solutionTimerBizVO, timeZoneId);
+        // DateTime now = DateTime.now(DateTimeZone.forID("Asia/Shanghai"));
+        // String dayPeriodLabel = now.toString(SchneiderDateTimeUtils.YYYY_MM_DD_PATTERN);
+        // System.out.println(dayPeriodLabel);
+        // String siteTimeZoneId = "Europe/Stockholm";
+        // DateTime now = DateTime.now(DateTimeZone.forID(siteTimeZoneId));
+        //
+        // DateTime startDateTime = now.plusMillis(-now.getMillisOfDay()).plusDays(-now.getDayOfMonth() + 1)
+        //         .plusMonths(-3).withZone(DateTimeZone.UTC);
+        // for (int i = 0; i < 3; i++) {
+        //     DateTime endDateTime = startDateTime.plusMonths(1);
+        //     endDateTime = endDateTime.dayOfMonth().withMaximumValue()
+        //             .withHourOfDay(startDateTime.getHourOfDay())
+        //             .withMinuteOfHour(startDateTime.getMinuteOfHour())
+        //             .withSecondOfMinute(startDateTime.getSecondOfMinute())
+        //             .withMillisOfSecond(startDateTime.getMillisOfSecond());
+        //     System.out.println(startDateTime + "------" + endDateTime);
+        //     startDateTime = endDateTime;
+        // }
+        // int offSet = 0;
+        // int maxLimit = 100;
+        // int count = 229 / 100;
+        // for (int i = 1; i <= count; i++) {
+        //     offSet = i * 100;
+        //     System.out.println(offSet + "-----" + maxLimit);
+        // }
+
+        int number = 5; // 给定的整数
+
+        List<Integer> rangeList = IntStream.rangeClosed(1, number)
+                .boxed()
+                .collect(Collectors.toList());
+
+        // 打印集合中的整数
+        for (int num : rangeList) {
+            System.out.println(num);
+        }
     }
 
     private static void covertTimerLoopsByTimeZoneId(SolutionTimerBizVO solutionTimerBizVO, String timeZoneId) {
