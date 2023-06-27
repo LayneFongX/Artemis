@@ -13,7 +13,6 @@ import com.farid.artemis.proxy.CacheProxy;
 import com.farid.artemis.utils.EventHubsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,7 +22,7 @@ import javax.annotation.Resource;
 import java.util.*;
 
 @Slf4j
-@Component
+// @Component
 public class EventHubsConsumer1 {
 
     @Resource
