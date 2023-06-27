@@ -43,7 +43,6 @@ public class KvStorageController {
                 .build();
 
         if (BusinessStorageType.APP == resType) {
-            // 目前感觉appId只有在app维度需要加上，以后如果所有维度需要再直接挪到builder那里吧
             addOrUpdateKvStorageParam.setAppId(apiRequestDo.getAppInfoDo().getAppId());
         }
         log.info("KvStorageController addOrUpdateValue addOrUpdateKvStorageParam = {}", JSON.toJSON(addOrUpdateKvStorageParam));
