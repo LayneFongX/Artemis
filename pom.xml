@@ -95,6 +95,12 @@
 
             <dependency>
                 <groupId>com.farid.artemis</groupId>
+                <artifactId>redis</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.farid.artemis</groupId>
                 <artifactId>eventhub</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -107,13 +113,13 @@
 
             <dependency>
                 <groupId>com.farid.artemis</groupId>
-                <artifactId>redis</artifactId>
+                <artifactId>listener</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.farid.artemis</groupId>
-                <artifactId>listener</artifactId>
+                <artifactId>kvstorage</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -239,6 +245,7 @@
         <module>log</module>
         <module>redis</module>
         <module>listener</module>
+        <module>kvstorage</module>
     </modules>
 
 </project>

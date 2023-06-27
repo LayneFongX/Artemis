@@ -86,6 +86,10 @@
             <artifactId>listener</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.farid.artemis</groupId>
+            <artifactId>kvstorage</artifactId>
+        </dependency>
 
     </dependencies>
 
