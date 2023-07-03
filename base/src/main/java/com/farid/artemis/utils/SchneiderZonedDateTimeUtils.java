@@ -14,6 +14,8 @@ public class SchneiderZonedDateTimeUtils {
 
     public final static DateTimeFormatter YYYYMMDDHH = DateTimeFormatter.ofPattern("yyyyMMddHH");
 
+    public final static DateTimeFormatter HHMM = DateTimeFormatter.ofPattern("HH:mm");
+
     public final static DateTimeFormatter YYYY_MM_DD_HH = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH");
 
     public final static DateTimeFormatter YYYY_MM_DD_T_HH_MM_SS_Z = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
